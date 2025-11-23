@@ -12,7 +12,7 @@ export default function LandingPage() {
                 Landing page UI
             </div>
             <div className="flex-1">
-                {isSignUp ? <SignUp /> : <SignIn />}
+                {isSignUp ? <SignUp setIsSignUp={setIsSignUp} /> : <SignIn />}
             </div>
         </div>
     )
