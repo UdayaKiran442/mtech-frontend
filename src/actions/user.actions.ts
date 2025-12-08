@@ -14,3 +14,16 @@ export async function registerUserAPI(payload: { name: string, email: string, pa
 
     }
 }
+
+export async function loginUserAPI(payload: { email: string, password: string }) {
+
+    const loginAPI = await fetch(`${BASE_URL}/user/login`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    })
+    return await loginAPI.json()
+
+}
