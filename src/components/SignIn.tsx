@@ -2,7 +2,7 @@
 
 import { Dispatch, SetStateAction, useState } from "react"
 import { setCookie } from 'cookies-next'
-import { useRouter } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 
 
 import { Input } from "./ui/Input"
@@ -10,7 +10,7 @@ import { Label } from "./ui/Label"
 import { H3, Tagline } from "./ui/Typography"
 import { loginUserAPI } from "@/actions/user.actions"
 
-export default async function SignIn({ setIsSignUp }: { setIsSignUp: Dispatch<SetStateAction<boolean>> }) {
+export default function SignIn({ setIsSignUp }: { setIsSignUp: Dispatch<SetStateAction<boolean>> }) {
 
     const [userLoginDetails, setUserLoginDetails] = useState({
         email: "",
@@ -31,13 +31,14 @@ export default async function SignIn({ setIsSignUp }: { setIsSignUp: Dispatch<Se
             email: userLoginDetails.email,
             password: userLoginDetails.password
         })
-        console.log(loginUser);
+        console.log(loginUser.token);
 
         if (loginUser.success) {
-            setCookie("token", loginUser.jwtToken, {
+            setCookie("token", loginUser.token, {
                 maxAge: 60 * 60 * 24 * 30
             })
             // redirect to home page
+            // redirect("/client/1")
         }
         setLoading(false)
     }

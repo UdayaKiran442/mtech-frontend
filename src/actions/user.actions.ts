@@ -33,7 +33,7 @@ export async function getUserProfileAPI(token: string) {
         method: 'GET',
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            "Authorization": `${token}`
         }
     })
     return await userProfileAPI.json()

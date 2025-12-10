@@ -9,7 +9,7 @@ import { Label } from "./ui/Label"
 import { H3, Tagline } from "./ui/Typography"
 import { registerUserAPI } from "@/actions/user.actions"
 
-export default async function SignUp({ setIsSignUp }: { setIsSignUp: Dispatch<SetStateAction<boolean>> }) {
+export default function SignUp({ setIsSignUp }: { setIsSignUp: Dispatch<SetStateAction<boolean>> }) {
 
     const [newUser, setNewUser] = useState({
         name: "",
