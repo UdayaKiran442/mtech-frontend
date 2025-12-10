@@ -1,3 +1,5 @@
+import { IGetUserProfileAPIResponse } from "@/types/types"
+
 const BASE_URL = "http://localhost:3000/v1"
 
 export async function registerUserAPI(payload: { name: string, email: string, password: string, role: string }) {
@@ -28,7 +30,7 @@ export async function loginUserAPI(payload: { email: string, password: string })
 
 }
 
-export async function getUserProfileAPI(token: string) {
+export async function getUserProfileAPI(token: string): Promise<IGetUserProfileAPIResponse> {
     const userProfileAPI = await fetch(`${BASE_URL}/user/profile`, {
         method: 'GET',
         headers: {
