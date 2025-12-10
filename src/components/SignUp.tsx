@@ -2,12 +2,14 @@
 
 import React, { Dispatch, SetStateAction, useState } from "react"
 import { useRouter } from "next/navigation"
+import { setCookie } from "cookies-next"
+
 import { Input } from "./ui/Input"
 import { Label } from "./ui/Label"
 import { H3, Tagline } from "./ui/Typography"
 import { registerUserAPI } from "@/actions/user.actions"
 
-export default function SignUp({ setIsSignUp }: { setIsSignUp: Dispatch<SetStateAction<boolean>> }) {
+export default async function SignUp({ setIsSignUp }: { setIsSignUp: Dispatch<SetStateAction<boolean>> }) {
 
     const [newUser, setNewUser] = useState({
         name: "",
@@ -35,7 +37,9 @@ export default function SignUp({ setIsSignUp }: { setIsSignUp: Dispatch<SetState
             email: "",
             password: ""
         })
-        localStorage.setItem("token", registeredUser.response.jwtToken);
+        setCookie("token", registeredUser.response.jwtToken, {
+            maxAge: 60 * 60 * 24 * 30
+        })
         setLoading(false);
         if (registeredUser.success) {
             // redirect to onboarding flow page

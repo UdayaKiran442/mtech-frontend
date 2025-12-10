@@ -27,3 +27,14 @@ export async function loginUserAPI(payload: { email: string, password: string })
     return await loginAPI.json()
 
 }
+
+export async function getUserProfileAPI(token: string) {
+    const userProfileAPI = await fetch(`${BASE_URL}/user/profile`, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+    })
+    return await userProfileAPI.json()
+}
