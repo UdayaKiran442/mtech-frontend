@@ -1,8 +1,8 @@
 import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation';
 
 import { getUserProfileAPI } from "@/actions/user.actions";
 import LandingPage from "@/components/LandingPage";
-import Workspace from "./client/[workspaceId]/page";
 
 export default async function Home() {
   const cookieStore = await cookies()
@@ -11,10 +11,13 @@ export default async function Home() {
   if (token) {
     const userProfile = await getUserProfileAPI(token)
     isAuthenticated = userProfile?.success === true;
+    if (isAuthenticated) {
+      redirect(`/client/${userProfile.workspaceId}`)
+    }
   }
   return (
     <div>
-      {isAuthenticated ? <LandingPage /> : <Workspace />}
+      <LandingPage />
     </div>
   );
 }
