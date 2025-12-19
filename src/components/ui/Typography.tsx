@@ -12,6 +12,12 @@ export function H3({ children, className }: ITypegraphyProps) {
     )
 }
 
+export function H4({ children, className }: ITypegraphyProps) {
+    return (
+        <h3 className={cn("text-2xl! font-bold", className)}>{children}</h3>
+    )
+}
+
 export function Tagline({ children, className }: ITypegraphyProps) {
     return <p className={cn("text-gray-600", className)}>{children}</p>;
 }

@@ -6,7 +6,7 @@ import { getAuthenticatedUser } from '@/lib/user';
 export default async function Home() {
   const { isAuthenticated, userProfile } = await getAuthenticatedUser();
   if (isAuthenticated && userProfile) {
-    redirect(`/client/${userProfile.workspaceId}`)
+    redirect(`/workspace/${userProfile.workspaceId}`)
   }
   return (
     <div>

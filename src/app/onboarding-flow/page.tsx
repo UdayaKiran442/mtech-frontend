@@ -1,7 +1,7 @@
-export default function OnboardingFlow() {
+import OnboardingFlow from "@/components/OnboardingFlow";
+
+export default function OnboardingFlowPage() {
     return (
-        <div>
-            <h1>Onboarding flow</h1>
-        </div>
+        <OnboardingFlow />
     )
 }
