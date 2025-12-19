@@ -20,6 +20,7 @@ export type ICreateOrganisationPayload = {
     orgName: string,
     orgSize: string,
     industry: string,
+    orgLogoUrl: string | null
 }
 
 export type ICreateOrganisationResponse = SuccessResponse & {

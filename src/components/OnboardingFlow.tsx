@@ -17,6 +17,7 @@ export default function OnboardingFlow() {
         orgName: '',
         orgSize: '',
         industry: '',
+        orgLogoUrl: null
     })
 
     const router = useRouter();
@@ -28,7 +29,7 @@ export default function OnboardingFlow() {
 
     function onChange(e: React.ChangeEvent<HTMLInputElement>) {
         setNewOrganisation({ ...newOrganisation, [e.target.name]: e.target.value })
-        if (e.target.name === 'workspaceUrl') {
+        if (e.target.name === 'workspaceUrl' || e.target.name === 'workspaceName') {
             setNewWorkspace({ ...newWorkspace, [e.target.name]: e.target.value })
         }
     }

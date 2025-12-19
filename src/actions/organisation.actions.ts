@@ -8,7 +8,6 @@ export async function createOrganisationAPI(payload: ICreateOrganisationPayload,
         headers: {
             "Content-Type": "application/json",
             "Authorization": `${token}`
-
         },
         body: JSON.stringify(payload)
     })
