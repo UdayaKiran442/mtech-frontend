@@ -2,7 +2,7 @@ import { IGetUserProfileAPIResponse } from "@/types/types"
 
 const BASE_URL = "http://localhost:3000/v1"
 
-export async function registerUserAPI(payload: { name: string, email: string, password: string, role: string }) {
+export async function registerUserAPI(payload: { name: string, email: string, password: string }) {
     try {
         const registerAPI = await fetch(`${BASE_URL}/user/register`, {
             method: 'POST',

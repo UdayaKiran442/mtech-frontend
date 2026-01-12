@@ -30,7 +30,6 @@ export default function SignUp({ setIsSignUp }: { setIsSignUp: Dispatch<SetState
             email: newUser.email,
             name: newUser.name,
             password: newUser.password,
-            role: "admin"
         })
         setNewUser({
             name: "",

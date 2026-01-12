@@ -9,6 +9,7 @@ import { Input } from "./ui/Input"
 import { Label } from "./ui/Label"
 import { H3, Tagline } from "./ui/Typography"
 import { loginUserAPI } from "@/actions/user.actions"
+import { getAuthenticatedUser } from "@/lib/user"
 
 export default function SignIn({ setIsSignUp }: { setIsSignUp: Dispatch<SetStateAction<boolean>> }) {
 
@@ -31,14 +32,16 @@ export default function SignIn({ setIsSignUp }: { setIsSignUp: Dispatch<SetState
             email: userLoginDetails.email,
             password: userLoginDetails.password
         })
-        console.log(loginUser.token);
 
         if (loginUser.success) {
             setCookie("token", loginUser.token, {
                 maxAge: 60 * 60 * 24 * 30
             })
             // redirect to home page
-            // redirect("/client/1")
+            const { isAuthenticated, userProfile } = await getAuthenticatedUser();
+            if (isAuthenticated && userProfile) {
+                redirect(`/workspace/${userProfile.workspace.workspaceId}`);
+            }
         }
         setLoading(false)
     }

@@ -3,11 +3,17 @@
 export type IGetUserProfileAPIResponse = {
     success: boolean,
     user: {
+        userId: string,
         name: string,
         email: string,
-        role: string,
-        workspaceId: string,
         organisationId: string
+    }
+    workspace: {
+        workspaceId: string,
+        workspaceName: string,
+        workspaceUrl: string,
+        memberId: string,
+        role: string
     }
 }
 
