@@ -14,7 +14,13 @@ export function H3({ children, className }: ITypegraphyProps) {
 
 export function H4({ children, className }: ITypegraphyProps) {
     return (
-        <h3 className={cn("text-2xl! font-bold", className)}>{children}</h3>
+        <h4 className={cn("text-2xl! font-bold", className)}>{children}</h4>
+    )
+}
+
+export function H6({ children, className }: ITypegraphyProps) {
+    return (
+        <h6 className={cn("text-lg! font-bold", className)}>{children}</h6>
     )
 }
 
