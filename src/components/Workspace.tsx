@@ -9,17 +9,17 @@ import { ChatCode } from "./workspace-views/ChatCode"
 import { WorkspaceLayout } from "./WorkspaceLayout"
 
 export default function WorkspaceComponent() {
-    const [view, setView] = useState<IWorkspaceView>("chat")
+    const [view, setView] = useState<IWorkspaceView>("Channels")
     return (
         <div className="flex gap-4">
             <div>
-                <WorkspaceLayout />
+                <WorkspaceLayout view={view} setView={setView} />
             </div>
             <div className="p-4">
-                {view === 'chat' && <Chat />}
-                {view === 'ai_chatbot' && <Chatbot />}
-                {view === 'knowledge_base' && <KnowledgeBase />}
-                {view === 'code_chat' && <ChatCode />}
+                {view === 'Channels' && <Chat />}
+                {view === 'AI Assistant' && <Chatbot />}
+                {view === 'Knowledge Base' && <KnowledgeBase />}
+                {view === 'Code Chat' && <ChatCode />}
             </div>
         </div>
     )

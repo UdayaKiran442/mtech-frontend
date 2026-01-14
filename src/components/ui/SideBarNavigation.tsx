@@ -1,15 +1,17 @@
+import { IWorkspaceView } from "@/types/types";
 
 type ISideBarNavigationProps = {
     children: React.ReactNode;
     label: string;
+    view: IWorkspaceView
 }
 
-export function SideBarNavigation({children, label}: ISideBarNavigationProps) {
+export function SideBarNavigation({children, label, view}: ISideBarNavigationProps) {
     return (
         <div>
-            <div className="flex gap-2 items-center mt-6 cursor-pointer hover:bg-gray-100 hover:p-1 rounded">
+            <div className={`flex gap-2 items-center mt-6 cursor-pointer ${label === view ? "bg-blue-500 p-1 py-2 rounded-2xl" : "hover:bg-gray-100 hover:p-1 rounded "}`}>
                 {children}
-                <p className='font-semibold text-gray-600'>{label}</p>
+                <p className={`font-semibold text-gray-600 ${label === view ? "text-white font-bold" : ""} `}>{label}</p>
             </div>
         </div>
     )

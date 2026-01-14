@@ -1,11 +1,17 @@
 "use client"
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { BookOpen, BotMessageSquare, ChevronDown, ChevronUp, MessageSquare, Workflow } from 'lucide-react'
 import { SideBarNavigation } from './ui/SideBarNavigation'
+import { IWorkspaceView } from '@/types/types'
 
 const iconStyle = "mt-1 ml-4 text-gray-500"
 
-export function WorkspaceLayout() {
+type IWorkspaceLayoutProps = {
+    view: IWorkspaceView,
+    setView: Dispatch<SetStateAction<IWorkspaceView>>
+}
+
+export function WorkspaceLayout({view, setView}: IWorkspaceLayoutProps) {
     const [isOpen, setIsOpen] = useState(false)
     return (
         <div>
@@ -26,18 +32,26 @@ export function WorkspaceLayout() {
                 </div>
                 {/* Navigation */}
                 <div>
-                    <SideBarNavigation label='Channels'>
-                        <MessageSquare size={18} className={`${iconStyle}`} />
-                    </SideBarNavigation>
-                    <SideBarNavigation label='Knowledge Base'>
-                        <BookOpen size={18} className={`${iconStyle}`} />
-                    </SideBarNavigation>
-                    <SideBarNavigation label='AI Assistant'>
-                        <BotMessageSquare size={18} className={`${iconStyle}`} />
-                    </SideBarNavigation>
-                    <SideBarNavigation label='Code Chat'>
-                        <Workflow size={18} className={`${iconStyle}`} />
-                    </SideBarNavigation> 
+                    <div onClick={() => setView("Channels")}>
+                        <SideBarNavigation view={view} label='Channels'>
+                            <MessageSquare size={18} className={`${iconStyle} ${view === 'Channels' ? "text-white" : ""}`} />
+                        </SideBarNavigation>
+                    </div>
+                    <div onClick={() => setView("Knowledge Base")}>
+                        <SideBarNavigation view={view} label='Knowledge Base'>
+                            <BookOpen size={18} className={`${iconStyle} ${view === 'Knowledge Base' ? "text-white" : ""}`} />
+                        </SideBarNavigation>
+                    </div>
+                    <div onClick={() => setView("AI Assistant")}>
+                        <SideBarNavigation view={view} label='AI Assistant'>
+                            <BotMessageSquare size={18} className={`${iconStyle} ${view === 'AI Assistant' ? "text-white" : ""}`} />
+                        </SideBarNavigation>
+                    </div>
+                    <div onClick={() => setView("Code Chat")}>
+                        <SideBarNavigation view={view} label='Code Chat'>
+                            <Workflow size={18} className={`${iconStyle} ${view === 'Code Chat' ? "text-white" : ""}`} />
+                        </SideBarNavigation> 
+                    </div>
                 </div>
             </div>
         </div>
