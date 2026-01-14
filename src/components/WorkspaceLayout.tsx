@@ -4,7 +4,7 @@ import { BookOpen, BotMessageSquare, ChevronDown, ChevronUp, MessageSquare, Work
 import { SideBarNavigation } from './ui/SideBarNavigation'
 import { IWorkspaceView } from '@/types/types'
 
-const iconStyle = "mt-1 ml-4 text-gray-500"
+const iconStyle = "mt-1 text-gray-500"
 
 type IWorkspaceLayoutProps = {
     view: IWorkspaceView,
