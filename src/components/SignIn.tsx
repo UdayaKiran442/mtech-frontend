@@ -37,6 +37,8 @@ export default function SignIn({ setIsSignUp }: { setIsSignUp: Dispatch<SetState
             setCookie("token", loginUser.token, {
                 maxAge: 60 * 60 * 24 * 30
             })
+            // add user to redux store
+            
             // redirect to home page
             const { isAuthenticated, userProfile } = await getAuthenticatedUser();
             if (isAuthenticated && userProfile) {
