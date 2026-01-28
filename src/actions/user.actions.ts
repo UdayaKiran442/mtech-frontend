@@ -1,4 +1,4 @@
-import { IGetUserProfileAPIResponse } from "@/types/types"
+import { IGetUserProfileAPIResponse, IUserWorkspacesResponse } from "@/types/types"
 
 const BASE_URL = "http://localhost:3000/v1"
 
@@ -39,4 +39,15 @@ export async function getUserProfileAPI(token: string): Promise<IGetUserProfileA
         }
     })
     return await userProfileAPI.json()
+}
+
+export async function getUserWorkspacesAPI(token: string): Promise<IUserWorkspacesResponse> {
+    const userWorkspacesAPI = await fetch(`${BASE_URL}/user/workspaces`, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}`
+        }
+    })
+    return await userWorkspacesAPI.json()
 }

@@ -19,7 +19,7 @@ export type IGetUserProfileAPIResponse = {
 
 type SuccessResponse = {
     success: boolean,
-    message: string
+    message?: string
 }
 
 export type ICreateOrganisationPayload = {
@@ -58,3 +58,21 @@ export type ICreateWorkspaceResponse = SuccessResponse & {
 }
 
 export type IWorkspaceView = "Channels" | "AI Assistant" | "Knowledge Base" | "Code Chat"
+
+export type IUserWorkspacesResponse = SuccessResponse & {
+    workspaces: {
+        workspaceId: string,
+        workspaceName: string,
+        workspaceUrl: string,
+        memberId: string,
+        role: string
+    }[]
+}
+
+export type IActiveWorkspace = {
+    workspaceId: string,
+    workspaceName: string,
+    workspaceUrl: string,
+    memberId: string,
+    role: string
+}

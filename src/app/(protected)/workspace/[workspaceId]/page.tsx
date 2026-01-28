@@ -1,10 +1,25 @@
+import { getUserWorkspacesAPI } from "@/actions/user.actions";
 import WorkspaceComponent from "@/components/Workspace";
+import { cookies } from "next/headers";
 
-export default function Workspace() {
+export default async function Workspace({params}: {params: {workspaceId: string}}) {
+    const { workspaceId } = await params
     // fetch users of workspace
-    return (
-        <div>
-            <WorkspaceComponent />
-        </div>
-    )
+
+    // fetch user workspaces
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value
+    if (token) {
+        const userWorkspaces = await getUserWorkspacesAPI(token);
+        if (userWorkspaces.success) {
+            const activeWorkspace = userWorkspaces.workspaces.find(ws => ws.workspaceId === workspaceId);
+            if (activeWorkspace){
+                return (
+                    <div>
+                        <WorkspaceComponent activeWorkspace={activeWorkspace} workspaces={userWorkspaces.workspaces} />
+                    </div>
+                )
+            }
+        }
+    }
 }

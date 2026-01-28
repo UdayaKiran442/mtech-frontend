@@ -2,16 +2,18 @@
 import { Dispatch, SetStateAction, useState } from 'react'
 import { BookOpen, BotMessageSquare, ChevronDown, ChevronUp, MessageSquare, Workflow } from 'lucide-react'
 import { SideBarNavigation } from './ui/SideBarNavigation'
-import { IWorkspaceView } from '@/types/types'
+import { IActiveWorkspace, IUserWorkspacesResponse, IWorkspaceView } from '@/types/types'
 
 const iconStyle = "mt-1 text-gray-500"
 
 type IWorkspaceLayoutProps = {
     view: IWorkspaceView,
+    workspaces: IUserWorkspacesResponse['workspaces'],
+    activeWorkspace: IActiveWorkspace,
     setView: Dispatch<SetStateAction<IWorkspaceView>>
 }
 
-export function WorkspaceLayout({view, setView}: IWorkspaceLayoutProps) {
+export function WorkspaceLayout({view, workspaces, activeWorkspace, setView}: IWorkspaceLayoutProps) {
     const [isOpen, setIsOpen] = useState(false)
     return (
         <div>
@@ -19,15 +21,15 @@ export function WorkspaceLayout({view, setView}: IWorkspaceLayoutProps) {
                 {/* Workspace selection */}
                 <div>
                    <div className='flex gap-1 items-center cursor-pointer' onClick={() => setIsOpen(!isOpen)}  >
-                     <p className="font-medium ">Workspace Name</p>
+                     <p className="font-medium ">{activeWorkspace.workspaceName}</p>
                      {isOpen ? <ChevronUp className={iconStyle} /> : <ChevronDown className={iconStyle} />}
                    </div>
                     {isOpen && (
-                        <div className=" bg-white border rounded shadow-lg w-48">
-                            <div className="p-2 hover:bg-gray-100 cursor-pointer">Workspace 1</div>
-                            <div className="p-2 hover:bg-gray-100 cursor-pointer">Workspace 2</div>
-                            <div className="p-2 hover:bg-gray-100 cursor-pointer">Workspace 3</div>
-                        </div>
+                        workspaces.length > 0 && workspaces.map((ws) => (
+                            <div key={ws.workspaceId} className=" bg-white border rounded shadow-lg w-48">
+                                <div className={`p-2 hover:bg-gray-100 cursor-pointer ${ws.workspaceId === activeWorkspace.workspaceId ? "bg-gray-200" : ""}`}>{ws.workspaceName}</div>
+                            </div>
+                        ))
                     )}
                 </div>
                 {/* Navigation */}
