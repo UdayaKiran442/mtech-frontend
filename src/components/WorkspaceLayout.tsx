@@ -17,7 +17,7 @@ export function WorkspaceLayout({view, workspaces, activeWorkspace, setView}: IW
     const [isOpen, setIsOpen] = useState(false)
     return (
         <div>
-            <div className="bg-[#FAFAFA] w-64 h-screen p-4 border-r-2 border-gray-200">
+            <div className="bg-[#FAFAFA] w-full h-screen p-4 border-r-2 border-gray-200">
                 {/* Workspace selection */}
                 <div>
                    <div className='flex gap-1 items-center cursor-pointer' onClick={() => setIsOpen(!isOpen)}  >

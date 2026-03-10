@@ -16,11 +16,11 @@ type IWorkspaceComponentProps = {
 export default function WorkspaceComponent({workspaces, activeWorkspace}: IWorkspaceComponentProps) {
     const [view, setView] = useState<IWorkspaceView>("Channels")
     return (
-        <div className="flex gap-4">
-            <div>
+        <div className="flex w-full">
+            <div className="w-1/4">
                 <WorkspaceLayout activeWorkspace={activeWorkspace} workspaces={workspaces} view={view} setView={setView} />
             </div>
-            <div className="p-4">
+            <div className="p-4 w-3/4">
                 {view === 'Channels' && <Chat />}
                 {view === 'AI Assistant' && <Chatbot />}
                 {view === 'Knowledge Base' && <KnowledgeBase />}
