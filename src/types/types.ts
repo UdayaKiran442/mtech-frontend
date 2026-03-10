@@ -76,3 +76,15 @@ export type IActiveWorkspace = {
     memberId: string,
     role: string
 }
+
+export type IWorkspaceDocument = {
+    key: string,
+    url: string,
+    size: number,
+    lastModified: Date
+    type: string
+}
+
+export type IFetchWorkspaceDocumentsResponse = SuccessResponse & {
+    documents: IWorkspaceDocument[]
+}

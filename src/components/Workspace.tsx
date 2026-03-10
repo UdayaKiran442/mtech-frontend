@@ -1,6 +1,6 @@
 "use client"
 
-import { IActiveWorkspace, IUserWorkspacesResponse, IWorkspaceView } from "@/types/types"
+import { IActiveWorkspace, IUserWorkspacesResponse, IWorkspaceDocument, IWorkspaceView } from "@/types/types"
 import { useState } from "react"
 import { Chat } from "./workspace-views/Chat"
 import { Chatbot } from "./workspace-views/Chatbot"
@@ -10,10 +10,11 @@ import { WorkspaceLayout } from "./WorkspaceLayout"
 
 type IWorkspaceComponentProps = {
     workspaces: IUserWorkspacesResponse['workspaces'],
-    activeWorkspace: IActiveWorkspace
+    activeWorkspace: IActiveWorkspace,
+    workspaceDocuments: IWorkspaceDocument[]
 }
 
-export default function WorkspaceComponent({workspaces, activeWorkspace}: IWorkspaceComponentProps) {
+export default function WorkspaceComponent({workspaces, activeWorkspace, workspaceDocuments}: IWorkspaceComponentProps) {
     const [view, setView] = useState<IWorkspaceView>("Channels")
     return (
         <div className="flex w-full">
@@ -23,7 +24,7 @@ export default function WorkspaceComponent({workspaces, activeWorkspace}: IWorks
             <div className="p-4 w-3/4">
                 {view === 'Channels' && <Chat />}
                 {view === 'AI Assistant' && <Chatbot />}
-                {view === 'Knowledge Base' && <KnowledgeBase />}
+                {view === 'Knowledge Base' && <KnowledgeBase workspaceDocuments={workspaceDocuments} />}
                 {view === 'Code Chat' && <ChatCode />}
             </div>
         </div>
