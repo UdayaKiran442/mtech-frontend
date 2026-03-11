@@ -7,13 +7,13 @@ import { IActiveWorkspace, IUserWorkspacesResponse, IWorkspaceView } from '@/typ
 const iconStyle = "mt-1 text-gray-500"
 
 type IWorkspaceLayoutProps = {
-    view: IWorkspaceView,
+    view?: IWorkspaceView,
     workspaces: IUserWorkspacesResponse['workspaces'],
     activeWorkspace: IActiveWorkspace,
-    setView: Dispatch<SetStateAction<IWorkspaceView>>
+    setView?: Dispatch<SetStateAction<IWorkspaceView>>
 }
 
-export function WorkspaceLayout({view, workspaces, activeWorkspace, setView}: IWorkspaceLayoutProps) {
+export function WorkspaceLayout({workspaces, activeWorkspace}: IWorkspaceLayoutProps) {
     const [isOpen, setIsOpen] = useState(false)
     return (
         <div>
@@ -34,24 +34,24 @@ export function WorkspaceLayout({view, workspaces, activeWorkspace, setView}: IW
                 </div>
                 {/* Navigation */}
                 <div>
-                    <div onClick={() => setView("Channels")}>
-                        <SideBarNavigation view={view} label='Channels'>
-                            <MessageSquare size={18} className={`${iconStyle} ${view === 'Channels' ? "text-white" : ""}`} />
+                    <div>
+                        <SideBarNavigation label='Chat'>
+                            <MessageSquare size={18} />
                         </SideBarNavigation>
                     </div>
-                    <div onClick={() => setView("Knowledge Base")}>
-                        <SideBarNavigation view={view} label='Knowledge Base'>
-                            <BookOpen size={18} className={`${iconStyle} ${view === 'Knowledge Base' ? "text-white" : ""}`} />
+                    <div>
+                        <SideBarNavigation label='Knowledge Base'>
+                            <BookOpen size={18} />
                         </SideBarNavigation>
                     </div>
-                    <div onClick={() => setView("AI Assistant")}>
-                        <SideBarNavigation view={view} label='AI Assistant'>
-                            <BotMessageSquare size={18} className={`${iconStyle} ${view === 'AI Assistant' ? "text-white" : ""}`} />
+                    <div>
+                        <SideBarNavigation label='AI Assistant'>
+                            <BotMessageSquare size={18} />
                         </SideBarNavigation>
                     </div>
-                    <div onClick={() => setView("Code Chat")}>
-                        <SideBarNavigation view={view} label='Code Chat'>
-                            <Workflow size={18} className={`${iconStyle} ${view === 'Code Chat' ? "text-white" : ""}`} />
+                    <div >
+                        <SideBarNavigation label='Code Chat'>
+                            <Workflow size={18} />
                         </SideBarNavigation> 
                     </div>
                 </div>

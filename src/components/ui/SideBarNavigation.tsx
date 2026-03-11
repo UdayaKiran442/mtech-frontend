@@ -3,7 +3,7 @@ import { IWorkspaceView } from "@/types/types";
 type ISideBarNavigationProps = {
     children: React.ReactNode;
     label: string;
-    view: IWorkspaceView
+    view?: IWorkspaceView
 }
 
 export function SideBarNavigation({children, label, view}: ISideBarNavigationProps) {
