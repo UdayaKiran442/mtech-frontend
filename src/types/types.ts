@@ -88,3 +88,16 @@ export type IWorkspaceDocument = {
 export type IFetchWorkspaceDocumentsResponse = SuccessResponse & {
     documents: IWorkspaceDocument[]
 }
+
+export type IWorkspaceMember = {
+     memberId: string,
+     workspaceId: string,
+     userId: string,
+     name: string,
+     email: string,
+     role: string
+}
+
+export type IFetchWorkspaceMembersResponse = SuccessResponse & {
+    members: IWorkspaceMember[]
+}
