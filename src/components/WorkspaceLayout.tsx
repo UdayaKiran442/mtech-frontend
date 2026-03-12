@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction, useState } from 'react'
 import { BookOpen, BotMessageSquare, ChevronDown, ChevronUp, MessageSquare, Workflow } from 'lucide-react'
 import { SideBarNavigation } from './ui/SideBarNavigation'
 import { IActiveWorkspace, IUserWorkspacesResponse, IWorkspaceView } from '@/types/types'
+import { usePathname } from 'next/navigation'
 
 const iconStyle = "mt-1 text-gray-500"
 
@@ -15,6 +16,16 @@ type IWorkspaceLayoutProps = {
 
 export function WorkspaceLayout({workspaces, activeWorkspace}: IWorkspaceLayoutProps) {
     const [isOpen, setIsOpen] = useState(false)
+    // active navigation from url path - either chat or code chat
+    const url = usePathname();
+    const getActiveViewFromUrl = (): IWorkspaceView => {
+        if (url.includes("chat")) return "Chat"
+        if (url.includes("knowledge-base")) return "Knowledge Base"
+        if (url.includes("ai-assistant")) return "AI Assistant"
+        if (url.includes("code-chat")) return "Code Chat"
+        return "Chat"
+    }
+    const view = getActiveViewFromUrl();
     return (
         <div>
             <div className="bg-[#FAFAFA] w-full h-screen p-4 border-r-2 border-gray-200">
@@ -35,22 +46,22 @@ export function WorkspaceLayout({workspaces, activeWorkspace}: IWorkspaceLayoutP
                 {/* Navigation */}
                 <div>
                     <div>
-                        <SideBarNavigation label='Chat'>
+                        <SideBarNavigation view={view} label='Chat'>
                             <MessageSquare size={18} />
                         </SideBarNavigation>
                     </div>
                     <div>
-                        <SideBarNavigation label='Knowledge Base'>
+                        <SideBarNavigation view={view} label='Knowledge Base'>
                             <BookOpen size={18} />
                         </SideBarNavigation>
                     </div>
                     <div>
-                        <SideBarNavigation label='AI Assistant'>
+                        <SideBarNavigation view={view} label='AI Assistant'>
                             <BotMessageSquare size={18} />
                         </SideBarNavigation>
                     </div>
                     <div >
-                        <SideBarNavigation label='Code Chat'>
+                        <SideBarNavigation view={view} label='Code Chat'>
                             <Workflow size={18} />
                         </SideBarNavigation> 
                     </div>
