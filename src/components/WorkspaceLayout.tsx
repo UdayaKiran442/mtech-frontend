@@ -4,6 +4,7 @@ import { BookOpen, BotMessageSquare, ChevronDown, ChevronUp, MessageSquare, Work
 import { SideBarNavigation } from './ui/SideBarNavigation'
 import { IActiveWorkspace, IUserWorkspacesResponse, IWorkspaceView } from '@/types/types'
 import { usePathname } from 'next/navigation'
+import Link from 'next/link'
 
 const iconStyle = "mt-1 text-gray-500"
 
@@ -46,24 +47,32 @@ export function WorkspaceLayout({workspaces, activeWorkspace}: IWorkspaceLayoutP
                 {/* Navigation */}
                 <div>
                     <div>
-                        <SideBarNavigation view={view} label='Chat'>
-                            <MessageSquare size={18} />
-                        </SideBarNavigation>
+                        <Link href={`/workspace/${activeWorkspace.workspaceId}/chat`}>
+                            <SideBarNavigation view={view} label='Chat'>
+                                <MessageSquare size={18} />
+                            </SideBarNavigation>
+                        </Link>
                     </div>
                     <div>
-                        <SideBarNavigation view={view} label='Knowledge Base'>
-                            <BookOpen size={18} />
-                        </SideBarNavigation>
+                        <Link href={`/workspace/${activeWorkspace.workspaceId}/knowledge-base`}>
+                            <SideBarNavigation view={view} label='Knowledge Base'>
+                                <BookOpen size={18} />
+                            </SideBarNavigation>
+                        </Link>
                     </div>
                     <div>
-                        <SideBarNavigation view={view} label='AI Assistant'>
-                            <BotMessageSquare size={18} />
-                        </SideBarNavigation>
+                        <Link href={`/workspace/${activeWorkspace.workspaceId}/ai-assistant`}>
+                            <SideBarNavigation view={view} label='AI Assistant'>
+                                <BotMessageSquare size={18} />
+                            </SideBarNavigation>
+                        </Link>
                     </div>
                     <div >
-                        <SideBarNavigation view={view} label='Code Chat'>
-                            <Workflow size={18} />
-                        </SideBarNavigation> 
+                        <Link href={`/workspace/${activeWorkspace.workspaceId}/code-chat`}>
+                            <SideBarNavigation view={view} label='Code Chat'>
+                                <Workflow size={18} />
+                            </SideBarNavigation>
+                        </Link>
                     </div>
                 </div>
             </div>
