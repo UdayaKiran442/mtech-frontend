@@ -19,9 +19,11 @@ export default async function ChatLayout({ children, params }: { children: React
                 <div className="flex-1 w-3/4">
                     {children}
                 </div>
-                <div className="w-1/4">
+                <div className="w-1/4 mt-1.5">
                     {members.map(member => (
-                        <WorkspaceMemberCard key={member.memberId} member={member} />
+                        <div key={member.memberId} className="mb-2">
+                            <WorkspaceMemberCard workspaceId={workspaceId} member={member} />
+                        </div>
                     ))}
                 </div>
             </div>
