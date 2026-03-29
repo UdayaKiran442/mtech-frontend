@@ -11,7 +11,7 @@ export async function getAuthenticatedUser() {
     if (token) {
         const userProfile = await getUserProfileAPI(token)
         isAuthenticated = userProfile?.success === true;
-        return { isAuthenticated, userProfile }
+        return { isAuthenticated, userProfile, token }
     }
     return { isAuthenticated }
 }
