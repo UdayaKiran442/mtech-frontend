@@ -1,15 +1,17 @@
 "use client"
 
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { IWorkspaceMember } from "@/types/types";
 
 export default function WorkspaceMemberCard({member, workspaceId}: { member: IWorkspaceMember, workspaceId: string }){
     const router = useRouter();
+    const pathname = usePathname();
+    const receiverId = pathname.split("/chat/")[1];
     async function handleRedirect(){
         router.push(`/workspace/${workspaceId}/chat/${member.userId}`);
     }
     return (
-        <div onClick={handleRedirect} className="flex items-center space-x-4 p-2 hover:bg-gray-100 rounded-md cursor-pointer">
+        <div onClick={handleRedirect} className={`flex items-center space-x-4 p-2 rounded-md cursor-pointer ${receiverId === member.userId ? "border-2 border-blue-400" : "hover:bg-gray-100"}`}>
             <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
                 <span className="text-sm font-semibold text-gray-600">{member.name.charAt(0)}</span>
             </div>
