@@ -5,9 +5,9 @@ import { redirect } from "next/navigation";
 
 export default async function ChatMember({params}: { params: Promise<{ workspaceId: string, receiverId: string }> }){ 
     const { workspaceId, receiverId } = await params;
-    const { token } = await getAuthenticatedUser(); // get user token for authentication
+    const { token, userProfile } = await getAuthenticatedUser(); // get user token for authentication
 
-    if (!token) {
+    if (!userProfile) {
         // handle unauthenticated state, maybe redirect to login page
         redirect("/")
     }
@@ -15,7 +15,7 @@ export default async function ChatMember({params}: { params: Promise<{ workspace
         const chatMessages = await fetchChatHistoryAPI({receiverId}, token)
         return (
             <div>
-               <ChatPage />
+               <ChatPage messages={chatMessages.messages} currentUserId={userProfile.user.userId} />
             </div>
         )
     }

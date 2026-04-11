@@ -101,3 +101,15 @@ export type IWorkspaceMember = {
 export type IFetchWorkspaceMembersResponse = SuccessResponse & {
     members: IWorkspaceMember[]
 }
+
+export type IMessage = {
+    messageId: string,
+    conversationId: string,
+    senderId: string,
+    text: string,
+    createdAt: Date
+}
+
+export type IFetchChatHistoryResponse = SuccessResponse & {
+    messages: IMessage[]
+}

@@ -1,22 +1,26 @@
-export function ChatPage(){
+import { IMessage } from "@/types/types"
+
+type IChatPageProps = {
+    messages: IMessage[],
+    currentUserId: string
+}
+
+export function ChatPage({ messages, currentUserId }: IChatPageProps){
     return (
         <div className="h-screen flex flex-col">
             {/* chat messages */}
             <div className="flex-1 overflow-y-auto">
                 {/* Your chat messages content here */}
-                {/* sender and receiver messages can be styled differently for better UX  */}
                 <div className="p-4">
-                    <div className="mb-4">
-                        <div className="bg-gray-200 rounded-lg p-3 inline-block">
-                            <p className="text-sm text-gray-800">Hello! How are you?</p>
-                        </div>
-                    </div>
-                    <div className="mb-4 text-right">
-                        <div className="bg-blue-500 rounded-lg p-3 inline-block">
-                            <p className="text-sm text-white">I'm good, thanks! How about you?</p>
-                        </div>
-                    </div>
-                    {/* more messages */}
+                    {
+                        messages.map((message) => (
+                            <div key={message.messageId} className={`mb-4 ${message.senderId !== currentUserId ? "" : "text-right"}`}>
+                                <div className={`${message.senderId !== currentUserId ? "bg-gray-200" : "bg-blue-500"} rounded-lg p-3 inline-block`}>
+                                    <p className={`text-sm ${message.senderId !== currentUserId ? "text-gray-800" : "text-white"}`}>{message.text}</p>
+                                </div>    
+                            </div>
+                        ))
+                    }
                 </div>
             </div>
             
