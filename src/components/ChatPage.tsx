@@ -1,4 +1,8 @@
+"use client"
+
+import socket from "@/config/socket";
 import { IMessage } from "@/types/types"
+import { useState } from "react";
 
 type IChatPageProps = {
     messages: IMessage[],
@@ -6,6 +10,12 @@ type IChatPageProps = {
 }
 
 export function ChatPage({ messages, currentUserId }: IChatPageProps){
+    const [chatMessages, setChatMessages] = useState<IMessage[]>(messages);
+
+    function handleSendMessage() {
+        socket.emit(`conversation`)
+    }
+
     return (
         <div className="h-screen flex flex-col">
             {/* chat messages */}
@@ -13,7 +23,7 @@ export function ChatPage({ messages, currentUserId }: IChatPageProps){
                 {/* Your chat messages content here */}
                 <div className="p-4">
                     {
-                        messages.map((message) => (
+                        chatMessages.map((message) => (
                             <div key={message.messageId} className={`mb-4 ${message.senderId !== currentUserId ? "" : "text-right"}`}>
                                 <div className={`${message.senderId !== currentUserId ? "bg-gray-200" : "bg-blue-500"} rounded-lg p-3 inline-block`}>
                                     <p className={`text-sm ${message.senderId !== currentUserId ? "text-gray-800" : "text-white"}`}>{message.text}</p>
