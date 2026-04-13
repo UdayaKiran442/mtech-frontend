@@ -16,7 +16,7 @@ export default async function ChatMember({params}: { params: Promise<{ workspace
         const chatMessages = await fetchChatHistoryAPI({ conversationId: conversationIdResponse.conversationId }, token)
         return (
             <div>
-               <ChatPage messages={chatMessages.messages} currentUserId={userProfile.user.userId} />
+               <ChatPage conversationId={conversationIdResponse.conversationId} messages={chatMessages.messages} currentUserId={userProfile.user.userId} />
             </div>
         )
     }
