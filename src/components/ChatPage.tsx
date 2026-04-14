@@ -17,21 +17,14 @@ export function ChatPage({ messages, currentUserId, conversationId }: IChatPageP
     function handleSendMessage() { }
 
     useEffect(() => {
-        console.log("Setting up socket connection and listeners...");
         socket.on("connect", () => {
-            console.log("Connected to socket server with ID:");
-            console.log(socket.id);
+            console.log(socket.id); 
         });
 
         socket.on("connect_error", (err) => {
-            console.error("Connection error:", err);
-            
+            console.log("Connection error:", err.message);
         });
-
-        socket.on("disconnect", (reason) => {
-            console.warn("Disconnected:", reason);
-        });
-    }, []);
+    }, [])
 
     return (
         <div className="h-screen flex flex-col">
