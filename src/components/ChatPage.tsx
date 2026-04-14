@@ -14,16 +14,32 @@ export function ChatPage({ messages, currentUserId, conversationId }: IChatPageP
     const [chatMessages, setChatMessages] = useState<IMessage[]>(messages);
     const [newMessage, setNewMessage] = useState<string>("");
 
-    function handleSendMessage() { }
+    function handleSendMessage() { 
+        socket.emit("newMessage", {
+            conversationId,
+            senderId: currentUserId,
+            text: newMessage
+        })
+        setNewMessage("")
+    }
 
     useEffect(() => {
         socket.on("connect", () => {
-            console.log(socket.id); 
         });
 
         socket.on("connect_error", (err) => {
-            console.log("Connection error:", err.message);
         });
+    }, [])
+
+    useEffect(() => {
+        // join the socket.io room for the current conversation
+        socket.emit("joinRoom", conversationId);
+    }, [conversationId])
+
+    useEffect(() => {
+        socket.on("messageAdded", (message: IMessage) => {
+            setChatMessages((prevMessages) => [...prevMessages, message])
+        })
     }, [])
 
     return (
