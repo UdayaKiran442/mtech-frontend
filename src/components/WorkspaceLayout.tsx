@@ -19,11 +19,12 @@ export function WorkspaceLayout({workspaces, activeWorkspace}: IWorkspaceLayoutP
     const [isOpen, setIsOpen] = useState(false)
     // active navigation from url path - either chat or code chat
     const url = usePathname();
+    const path = url.split(`/workspace/${activeWorkspace.workspaceId}/`)[1]
     const getActiveViewFromUrl = (): IWorkspaceView => {
-        if (url.includes("chat")) return "Chat"
-        if (url.includes("knowledge-base")) return "Knowledge Base"
-        if (url.includes("ai-assistant")) return "AI Assistant"
-        if (url.includes("code-chat")) return "Code Chat"
+        if (path === "chat") return "Chat"
+        if (path === "knowledge-base") return "Knowledge Base"
+        if (path === "ai-assistant") return "AI Assistant"
+        if (path === "code-chat") return "Code Chat"
         return "Chat"
     }
     const view = getActiveViewFromUrl();
