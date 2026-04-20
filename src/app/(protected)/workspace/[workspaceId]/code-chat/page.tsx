@@ -1,9 +1,10 @@
 import { ConnectGithub } from "@/components/ConnectGithub";
-import { getGithubToken } from "@/lib/githubToken"
+import { getAuthenticatedUser } from "@/lib/user";
 
 export default async function CodeChat() {
-    const githubToken = await getGithubToken();
-    if (!githubToken) {
+    const { userProfile } = await getAuthenticatedUser();
+    const isConnectedToGithub = userProfile?.user.isGithubConnected;
+    if (!isConnectedToGithub) {
         return <ConnectGithub />;
     }
     return (

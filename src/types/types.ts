@@ -6,7 +6,9 @@ export type IGetUserProfileAPIResponse = {
         userId: string,
         name: string,
         email: string,
-        organisationId: string
+        organisationId: string,
+        isGithubConnected: boolean,
+        githubUsername: string | null
     }
     workspace: {
         workspaceId: string,

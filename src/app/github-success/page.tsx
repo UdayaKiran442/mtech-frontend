@@ -1,9 +1,13 @@
+import GithubSuccess from "@/components/GithubSuccess"
+import { getAuthenticatedUser } from "@/lib/user"
+
 export default async function GitHubSuccessPage(){
-    console.log("Github auth success")
+    const { token, userProfile } = await getAuthenticatedUser()
+    if (!token || !userProfile) {
+        // handle unauthenticated state, maybe redirect to login page
+        return <p>Authentication failed. Please try again.</p>
+    }
     return (
-        <div>
-            <h1 className="text-2xl font-bold">GitHub Authentication Successful!</h1>
-            <p>You can now close this window and return to the application.</p>
-        </div>
+        <GithubSuccess token={token} userId={userProfile.user.userId} />
     )
 }
