@@ -115,3 +115,13 @@ export type IMessage = {
 export type IFetchChatHistoryResponse = SuccessResponse & {
     messages: IMessage[]
 }
+
+export type IUpdateUserPayload = {
+	userId: string;
+	name?: string;
+	organisationId?: string;
+	isGitHubConnected?: boolean;
+	githubUsername?: string;
+};
+
+export type IUpdateUserResponse = SuccessResponse;

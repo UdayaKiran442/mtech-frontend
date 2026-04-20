@@ -1,4 +1,4 @@
-import { IGetUserProfileAPIResponse, IUserWorkspacesResponse } from "@/types/types"
+import { IGetUserProfileAPIResponse, IUpdateUserPayload, IUpdateUserResponse, IUserWorkspacesResponse } from "@/types/types"
 
 const BASE_URL = "http://localhost:3000/v1"
 
@@ -50,4 +50,16 @@ export async function getUserWorkspacesAPI(token: string): Promise<IUserWorkspac
         }
     })
     return await userWorkspacesAPI.json()
+}
+
+export async function updateUserAPI(token: string, payload: IUpdateUserPayload): Promise<IUpdateUserResponse> {
+    const updateUser = await fetch(`${BASE_URL}/user/update`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}`
+        },
+        body: JSON.stringify(payload)
+    })
+    return await updateUser.json()
 }
