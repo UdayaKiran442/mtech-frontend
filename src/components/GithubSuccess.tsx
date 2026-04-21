@@ -1,7 +1,6 @@
 "use client"
 
 import { useSearchParams } from 'next/navigation'
-import { setCookie } from 'cookies-next'
 import { updateUserAPI } from '@/actions/user.actions';
 import { useEffect } from 'react';
 import { useRouter } from "next/navigation"
@@ -11,8 +10,6 @@ export default function GithubSuccess({ token, userId }: { token: string; userId
     const searchParams = useSearchParams();
     const router = useRouter();
     const username = searchParams.get("username");
-    const accessToken = searchParams.get("accessToken");
-    setCookie("github_token", accessToken)
     async function updateUser() {
         const updateUserAPIResponse = await updateUserAPI(token, {
             userId: userId,
@@ -21,19 +18,17 @@ export default function GithubSuccess({ token, userId }: { token: string; userId
         })
         if (updateUserAPIResponse.success) {
             router.push("/")
-            alert("GitHub account connected successfully!")
         }
         else {
-            alert("Failed to connect GitHub account. Please try again.")
             router.push("/")
         }
         
     }
     useEffect(() => {
-        if (username && accessToken) {
+        if (username) {
             updateUser();
         }
-    }, [username, accessToken])
+    }, [username])
     return (
         <div>
             <h1 className="text-2xl font-bold">GitHub Authentication Successful!</h1>
