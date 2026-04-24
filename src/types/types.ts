@@ -87,10 +87,6 @@ export type IWorkspaceDocument = {
     type: string
 }
 
-export type IFetchWorkspaceDocumentsResponse = SuccessResponse & {
-    documents: IWorkspaceDocument[]
-}
-
 export type IWorkspaceMember = {
      memberId: string,
      workspaceId: string,

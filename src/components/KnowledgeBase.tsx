@@ -1,12 +1,18 @@
+"use client";
+
 import { Upload, FileText, Calendar, HardDrive } from "lucide-react";
 import { H3 } from "./ui/Typography";
+import { IWorkspaceDocument } from "@/types/types";
+import { useState } from "react";
+import { IDocumentAPIResponse } from "@/actions/service.actions";
 
-export function KnowledgeBaseComponent() {
-  const documents = [
-    "Project Requirements.pdf",
-    "System Design Notes.docx",
-    "API Documentation.pdf",
-  ];
+
+export function KnowledgeBaseComponent({ documents }: { documents: IDocumentAPIResponse['documents'] }) {
+    const [selectedDocument, setSelectedDocument] = useState<IWorkspaceDocument | null>(null);
+
+    function handleDocumentClick(doc: IWorkspaceDocument) {
+        setSelectedDocument(doc);
+    }
 
   return (
     <div className="min-h-[80vh]  -gradient-to-br from-slate-50 to-gray-100 p-6 rounded-3xl shadow-sm">
@@ -39,11 +45,12 @@ export function KnowledgeBaseComponent() {
             {documents.map((doc, index) => (
               <div
                 key={index}
-                className="flex items-center gap-3 p-4 rounded-2xl border border-gray-200 bg-gray-50 hover:bg-gray-100 cursor-pointer transition"
+                className={`flex items-center gap-3 p-4 rounded-2xl border hover:bg-gray-100 cursor-pointer transition ${selectedDocument?.key === doc.key ? "border-blue-500 bg-blue-50" : "border-gray-200 bg-gray-50"}`}
+                onClick={() => handleDocumentClick(doc)}
               >
                 <FileText className="text-gray-600" size={18} />
                 <p className="text-sm font-medium text-gray-700 truncate">
-                  {doc}
+                  {doc.key.split("/")[1]}
                 </p>
               </div>
             ))}
@@ -57,7 +64,11 @@ export function KnowledgeBaseComponent() {
           </H3>
 
           <div className="h-[400px] rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 flex items-center justify-center text-gray-400 text-sm">
-            Document Preview Area
+            {selectedDocument ? (
+              <p>{selectedDocument.key.split("/")[1]}</p>
+            ) : (
+              <p>Select a document to preview</p>
+            )}
           </div>
         </div>
 
@@ -72,7 +83,7 @@ export function KnowledgeBaseComponent() {
               <HardDrive size={18} className="text-gray-600" />
               <div>
                 <p className="text-xs text-gray-500">Size</p>
-                <p className="text-sm font-medium text-gray-800">1024 KB</p>
+                <p className="text-sm font-medium text-gray-800">{selectedDocument?.size || ""}</p>
               </div>
             </div>
 
@@ -80,25 +91,18 @@ export function KnowledgeBaseComponent() {
               <FileText size={18} className="text-gray-600" />
               <div>
                 <p className="text-xs text-gray-500">Type</p>
-                <p className="text-sm font-medium text-gray-800">PDF</p>
+                <p className="text-sm font-medium text-gray-800">{selectedDocument?.type || ""}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3 p-3 rounded-2xl bg-gray-50">
               <Calendar size={18} className="text-gray-600" />
               <div>
-                <p className="text-xs text-gray-500">Created</p>
-                <p className="text-sm font-medium text-gray-800">01/01/2024</p>
+                <p className="text-xs text-gray-500">Created At</p>
+                <p className="text-sm font-medium text-gray-800">{selectedDocument?.lastModified ? selectedDocument.lastModified.toDateString() : ""}</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-3 rounded-2xl bg-gray-50">
-              <Calendar size={18} className="text-gray-600" />
-              <div>
-                <p className="text-xs text-gray-500">Last Modified</p>
-                <p className="text-sm font-medium text-gray-800">01/02/2024</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>
