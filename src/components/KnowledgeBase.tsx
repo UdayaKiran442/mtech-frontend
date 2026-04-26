@@ -5,6 +5,7 @@ import { H3 } from "./ui/Typography";
 import { IWorkspaceDocument } from "@/types/types";
 import { useState } from "react";
 import { IDocumentAPIResponse } from "@/actions/service.actions";
+import PdfViewer from "./PdfViewer";
 
 
 export function KnowledgeBaseComponent({ documents }: { documents: IDocumentAPIResponse['documents'] }) {
@@ -65,7 +66,7 @@ export function KnowledgeBaseComponent({ documents }: { documents: IDocumentAPIR
 
           <div className="h-[400px] rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 flex items-center justify-center text-gray-400 text-sm">
             {selectedDocument ? (
-              <p>{selectedDocument.key.split("/")[1]}</p>
+              <PdfViewer url={selectedDocument.url} />
             ) : (
               <p>Select a document to preview</p>
             )}
