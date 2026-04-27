@@ -17,6 +17,6 @@ export default async function KnowledgeBase(){
     const documents = fetchDocumentsAPIResponse.documents;
     
     return (
-       <KnowledgeBaseComponent workspaceId={userProfile.workspace.workspaceId} documents={documents} />
+       <KnowledgeBaseComponent workspaceId={userProfile.workspace.workspaceId} documents={documents} token={token} />
     )
 }

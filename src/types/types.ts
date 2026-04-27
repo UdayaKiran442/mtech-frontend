@@ -121,3 +121,10 @@ export type IUpdateUserPayload = {
 };
 
 export type IUpdateUserResponse = SuccessResponse;
+
+export type IUploadDocumentToAWSResponse = SuccessResponse & {
+    uploadLink: {
+        key: string,
+        url: string,
+    }
+}

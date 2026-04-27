@@ -1,5 +1,6 @@
 const BASE_URL = "http://localhost:3000/v1"
 
+import { IUploadDocumentToAWSResponse } from "@/types/types";
 import z from "zod";
 
 const DocumentAPIResponseSchema = z.object({
@@ -27,4 +28,12 @@ export async function fetchWorkspaceDocumentsAPI(payload: { workspaceId: string 
         body: JSON.stringify(payload)
     })
     return DocumentAPIResponseSchema.parse(await fetchWorkspaceDocuments.json())
+}
+
+export async function uploadDocumentToAWS(formData: FormData): Promise<IUploadDocumentToAWSResponse> {
+    const uploadDocumentResponse = await fetch(`${BASE_URL}/service/aws/upload`, {
+        method: 'POST',
+        body: formData,
+    })
+    return await uploadDocumentResponse.json();
 }

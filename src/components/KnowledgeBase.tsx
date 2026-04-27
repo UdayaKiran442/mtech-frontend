@@ -4,9 +4,10 @@ import { Upload, FileText, Calendar, HardDrive, X } from "lucide-react";
 import { H3 } from "./ui/Typography";
 import { IWorkspaceDocument } from "@/types/types";
 import { useState, useEffect, MouseEvent, ChangeEvent } from "react";
-import { IDocumentAPIResponse } from "@/actions/service.actions";
+import { IDocumentAPIResponse, uploadDocumentToAWS } from "@/actions/service.actions";
+import { addKnowledgeToWorkspaceAPI } from "@/actions/workspace.actions";
 
-export function KnowledgeBaseComponent({ documents, workspaceId }: { documents: IDocumentAPIResponse['documents']; workspaceId: string }) {
+export function KnowledgeBaseComponent({ documents, workspaceId, token }: { documents: IDocumentAPIResponse['documents']; workspaceId: string; token: string }) {
     const [selectedDocument, setSelectedDocument] = useState<IWorkspaceDocument | null>(null);
     const [open, setOpen] = useState(false);
 
@@ -30,7 +31,25 @@ export function KnowledgeBaseComponent({ documents, workspaceId }: { documents: 
 
     async function handleSubmit(){
         const file = formData.get('file') as File;
-        console.log(await file.arrayBuffer())
+        if (!file){
+            // handle error - no file selected
+            return;
+        }
+        const uploadResponse = await uploadDocumentToAWS(formData);
+        if (uploadResponse.success) {
+            // call api to save document metadata to db
+            const addKnowledgeResponse = await addKnowledgeToWorkspaceAPI({
+                workspaceId,
+                fileUrl: uploadResponse.uploadLink.url,
+                key: uploadResponse.uploadLink.key
+            }, token)
+            if (addKnowledgeResponse.success) {
+                toggleOpen();
+            }
+        }
+        else {
+            // handle upload error
+        }
     }
 
     // Close modal when clicking outside

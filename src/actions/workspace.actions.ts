@@ -25,3 +25,15 @@ export async function fetchWorkspaceMembersAPI(payload: {workspaceId: string}, t
     })
     return await workspaceMembers.json()
 }
+
+export async function addKnowledgeToWorkspaceAPI(payload: {workspaceId: string, fileUrl: string, key: string}, token: string) {
+    const addKnowledgeResponse = await fetch(`${BASE_URL}/workspace/add-knowledge`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}`
+        },
+        body: JSON.stringify(payload)
+    })
+    return await addKnowledgeResponse.json();
+}
