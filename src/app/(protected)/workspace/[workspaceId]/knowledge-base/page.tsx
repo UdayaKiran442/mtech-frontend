@@ -1,5 +1,6 @@
 import { fetchWorkspaceDocumentsAPI } from "@/actions/service.actions";
 import { KnowledgeBaseComponent } from "@/components/KnowledgeBase";
+import KnowledgeBaseV2 from "@/components/KnowledgeBaseV2";
 import { getAuthenticatedUser } from "@/lib/user";
 import { redirect } from "next/navigation";
 
@@ -17,6 +18,6 @@ export default async function KnowledgeBase(){
     const documents = fetchDocumentsAPIResponse.documents;
     
     return (
-       <KnowledgeBaseComponent workspaceId={userProfile.workspace.workspaceId} documents={documents} token={token} />
+       <KnowledgeBaseV2 workspaceId={userProfile.workspace.workspaceId} documents={documents} token={token} />
     )
 }
