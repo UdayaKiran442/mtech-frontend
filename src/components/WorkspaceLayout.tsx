@@ -6,7 +6,7 @@ import { IActiveWorkspace, IUserWorkspacesResponse, IWorkspaceView } from '@/typ
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 
-const iconStyle = "mt-1 text-gray-500"
+const iconStyle = "mt-0.5 text-[#929292]"
 
 type IWorkspaceLayoutProps = {
     view?: IWorkspaceView,
@@ -30,17 +30,19 @@ export function WorkspaceLayout({workspaces, activeWorkspace}: IWorkspaceLayoutP
     const view = getActiveViewFromUrl();
     return (
         <div>
-            <div className="bg-[#FAFAFA] w-full h-screen p-4 border-r-2 border-gray-200">
+            <div className="bg-bg_primary w-full h-screen p-4 ">
                 {/* Workspace selection */}
                 <div>
                    <div className='flex gap-1 items-center cursor-pointer' onClick={() => setIsOpen(!isOpen)}  >
-                     <p className="font-medium ">{activeWorkspace.workspaceName}</p>
+                     <p className="font-medium text-text">{activeWorkspace.workspaceName}</p>
                      {isOpen ? <ChevronUp className={iconStyle} /> : <ChevronDown className={iconStyle} />}
                    </div>
                     {isOpen && (
                         workspaces.length > 0 && workspaces.map((ws) => (
-                            <div key={ws.workspaceId} className=" bg-white border rounded shadow-lg w-48">
-                                <div className={`p-2 hover:bg-gray-100 cursor-pointer ${ws.workspaceId === activeWorkspace.workspaceId ? "bg-gray-200" : ""}`}>{ws.workspaceName}</div>
+                            <div key={ws.workspaceId} className=" bg-bg_primary border rounded shadow-lg w-48">
+                                <div className={`p-2 hover:bg-bg_secondary cursor-pointer ${ws.workspaceId === activeWorkspace.workspaceId ? "bg-bg_secondary" : ""}`}>
+                                    <p className="text-text">{ws.workspaceName}</p>
+                                </div>
                             </div>
                         ))
                     )}
@@ -50,28 +52,28 @@ export function WorkspaceLayout({workspaces, activeWorkspace}: IWorkspaceLayoutP
                     <div>
                         <Link href={`/workspace/${activeWorkspace.workspaceId}/chat`}>
                             <SideBarNavigation view={view} label='Chat'>
-                                <MessageSquare size={18} />
+                                <MessageSquare className='text-icon_primary' size={18} />
                             </SideBarNavigation>
                         </Link>
                     </div>
                     <div>
                         <Link href={`/workspace/${activeWorkspace.workspaceId}/knowledge-base`}>
                             <SideBarNavigation view={view} label='Knowledge Base'>
-                                <BookOpen size={18} />
+                                <BookOpen className='text-icon_primary' size={18} />
                             </SideBarNavigation>
                         </Link>
                     </div>
                     <div>
                         <Link href={`/workspace/${activeWorkspace.workspaceId}/ai-assistant`}>
                             <SideBarNavigation view={view} label='AI Assistant'>
-                                <BotMessageSquare size={18} />
+                                <BotMessageSquare className='text-icon_primary' size={18} />
                             </SideBarNavigation>
                         </Link>
                     </div>
                     <div >
                         <Link href={`/workspace/${activeWorkspace.workspaceId}/code-chat`}>
                             <SideBarNavigation view={view} label='Code Chat'>
-                                <Workflow size={18} />
+                                <Workflow className='text-icon_primary' size={18} />
                             </SideBarNavigation>
                         </Link>
                     </div>

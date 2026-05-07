@@ -9,9 +9,9 @@ type ISideBarNavigationProps = {
 export function SideBarNavigation({children, label, view}: ISideBarNavigationProps) {
     return (
         <div>
-            <div className={`flex gap-3 items-center mt-6 p-2 cursor-pointer ${label === view ? "bg-blue-500 py-2 rounded-2xl" : "hover:bg-gray-100 hover:p-1 rounded "}`}>
+            <div className={`flex gap-3 items-center mt-6 p-2 cursor-pointer ${label === view ? "bg-bg_secondary py-2 rounded-2xl" : "hover:bg-bg_secondary hover:py-2 hover:rounded-2xl"}`}>
                 {children}
-                <p className={`font-semibold text-gray-600 ${label === view ? "text-white font-bold" : ""} `}>{label}</p>
+                <p className={`font-semibold text-text ${label === view ? "font-bold" : ""} `}>{label}</p>
             </div>
         </div>
     )
