@@ -24,7 +24,7 @@ export default async function ProtectedLayout({ children, params }: { children: 
           <>
             <UserHydrator user={userProfile} />
             <div className="flex w-full ">
-              <div className="w-[20%] border-r border-gray-100">
+              <div className="w-[20%] border-r border-border_primary">
                 <WorkspaceLayout workspaces={userWorkspaces.workspaces} activeWorkspace={activeWorkspace} />
               </div>
               <div className="flex-1 w-3/4">

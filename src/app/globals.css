@@ -5,5 +5,6 @@
     --color-text: #929292;
     --color-bg_secondary: #212121;
     --color-icon_primary: #8D8D8D;
+    --color-border_primary: #2E2E2E;
     --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
