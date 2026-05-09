@@ -19,7 +19,7 @@ export type IGetUserProfileAPIResponse = {
     }
 }
 
-type SuccessResponse = {
+export type SuccessResponse = {
     success: boolean,
     message?: string
 }

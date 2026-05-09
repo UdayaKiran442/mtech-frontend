@@ -1,5 +1,4 @@
 import { fetchWorkspaceDocumentsAPI } from "@/actions/service.actions";
-import { KnowledgeBaseComponent } from "@/components/KnowledgeBase";
 import KnowledgeBaseV2 from "@/components/KnowledgeBaseV2";
 import { getAuthenticatedUser } from "@/lib/user";
 import { redirect } from "next/navigation";

@@ -1,4 +1,4 @@
-import { ICreateWorkspacePayload, ICreateWorkspaceResponse, IFetchWorkspaceMembersResponse } from "@/types/types";
+import { ICreateWorkspacePayload, ICreateWorkspaceResponse, IFetchWorkspaceMembersResponse, SuccessResponse } from "@/types/types";
 
 const BASE_URL = "http://localhost:3000/v1"
 
@@ -26,7 +26,7 @@ export async function fetchWorkspaceMembersAPI(payload: {workspaceId: string}, t
     return await workspaceMembers.json()
 }
 
-export async function addKnowledgeToWorkspaceAPI(payload: {workspaceId: string, fileUrl: string, key: string}, token: string) {
+export async function addKnowledgeToWorkspaceAPI(payload: {workspaceId: string, fileUrl: string, key: string, index: string}, token: string): Promise<SuccessResponse> {
     const addKnowledgeResponse = await fetch(`${BASE_URL}/workspace/add-knowledge`, {
         method: 'POST',
         headers: {
