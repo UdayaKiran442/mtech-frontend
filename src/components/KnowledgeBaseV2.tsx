@@ -2,7 +2,7 @@
 
 import { IDocumentAPIResponse } from "@/actions/service.actions";
 import { H6 } from "./ui/Typography";
-import { Upload, BookOpen } from "lucide-react";
+import { Upload, BookOpen, Trash2 } from "lucide-react";
 import { useRef } from "react";
 
 export default function KnowledgeBaseV2({ documents, workspaceId, token }: { documents: IDocumentAPIResponse['documents']; workspaceId: string; token: string }) {
@@ -25,8 +25,15 @@ export default function KnowledgeBaseV2({ documents, workspaceId, token }: { doc
             </div>
             {
                 documents.length > 0 ? (
-                    <div>
-                        <p>Documents here</p>
+                    <div className="p-12">
+                        <p className="text-text text-sm">Documents ({documents.length})</p>
+                        <div className="w-4xl bg-[#161616] mt-1 p-2.5 border-2 border-border_primary flex justify-between">
+                            <div className="flex gap-4 items-center">
+                                <p className="text-[#00F0FF] text-[0.7rem]">PDF</p>
+                                <p className="text-white text-sm">Cohort 2_Sem II_Class Schedule_8f5f5e3af4d04a469f408e33daacb101.pdf</p>
+                            </div>
+                            <Trash2 size={18} className="text-icon_primary hover:text-red-500 cursor-pointer" />
+                        </div>
                     </div>
                 ) : <div className="p-12">
                     <p className="text-text text-sm">
