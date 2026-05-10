@@ -59,7 +59,7 @@ export type ICreateWorkspaceResponse = SuccessResponse & {
     }
 }
 
-export type IWorkspaceView = "Chat" | "AI Assistant" | "Knowledge Base" | "Code Chat"
+export type IWorkspaceView = "Chat" | "AI Assistant" | "Knowledge Base" | "Codebot"
 
 export type IUserWorkspacesResponse = SuccessResponse & {
     workspaces: {

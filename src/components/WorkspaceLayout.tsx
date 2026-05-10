@@ -24,7 +24,7 @@ export function WorkspaceLayout({workspaces, activeWorkspace}: IWorkspaceLayoutP
         if (path === "chat") return "Chat"
         if (path === "knowledge-base") return "Knowledge Base"
         if (path === "ai-assistant") return "AI Assistant"
-        if (path === "code-chat") return "Code Chat"
+        if (path === "code-chat") return "Codebot"
         return "Chat"
     }
     const view = getActiveViewFromUrl();
@@ -50,11 +50,11 @@ export function WorkspaceLayout({workspaces, activeWorkspace}: IWorkspaceLayoutP
                 {/* Navigation */}
                 <div>
                     <div>
-                        <Link href={`/workspace/${activeWorkspace.workspaceId}/chat`}>
+                        {/* <Link href={`/workspace/${activeWorkspace.workspaceId}/chat`}>
                             <SideBarNavigation view={view} label='Chat'>
                                 <MessageSquare className='text-icon_primary' size={14} />
                             </SideBarNavigation>
-                        </Link>
+                        </Link> */}
                     </div>
                     <div>
                         <Link href={`/workspace/${activeWorkspace.workspaceId}/knowledge-base`}>
@@ -64,15 +64,15 @@ export function WorkspaceLayout({workspaces, activeWorkspace}: IWorkspaceLayoutP
                         </Link>
                     </div>
                     <div>
-                        <Link href={`/workspace/${activeWorkspace.workspaceId}/ai-assistant`}>
+                        {/* <Link href={`/workspace/${activeWorkspace.workspaceId}/ai-assistant`}>
                             <SideBarNavigation view={view} label='AI Assistant'>
                                 <BotMessageSquare className='text-icon_primary' size={14} />
                             </SideBarNavigation>
-                        </Link>
+                        </Link> */}
                     </div>
                     <div >
                         <Link href={`/workspace/${activeWorkspace.workspaceId}/code-chat`}>
-                            <SideBarNavigation view={view} label='Code Chat'>
+                            <SideBarNavigation view={view} label='Codebot'>
                                 <Workflow className='text-icon_primary' size={14} />
                             </SideBarNavigation>
                         </Link>
