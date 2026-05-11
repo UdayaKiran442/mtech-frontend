@@ -8,7 +8,8 @@ export type IGetUserProfileAPIResponse = {
         email: string,
         organisationId: string,
         isGithubConnected: boolean,
-        githubUsername: string | null
+        githubUsername: string | null,
+        githubInstallationId: string | null
     }
     workspace: {
         workspaceId: string,
@@ -118,6 +119,7 @@ export type IUpdateUserPayload = {
 	organisationId?: string;
 	isGitHubConnected?: boolean;
 	githubUsername?: string;
+    githubInstallationId?: string;
 };
 
 export type IUpdateUserResponse = SuccessResponse;

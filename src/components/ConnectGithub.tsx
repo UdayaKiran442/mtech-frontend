@@ -1,11 +1,11 @@
 "use client"
 
-import { fetchGithubAuthUrlAPI } from "@/actions/github.actions"
+import { fetchGithubAppInstallationUrlAPI } from "@/actions/github.actions"
 
 export function ConnectGithub() {
 
     async function handleGithubConnect() {
-        const url = await fetchGithubAuthUrlAPI();
+        const url = await fetchGithubAppInstallationUrlAPI();
         window.location.href = url;
     }
 
