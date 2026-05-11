@@ -7,6 +7,6 @@ export default async function Workspace({params}: {params: {workspaceId: string}
     const token = cookieStore.get("token")?.value
     if (token) {
         // redirect to chat route
-        redirect(`/workspace/${workspaceId}/chat`);
+        redirect(`/workspace/${workspaceId}/code-chat`);
     }
 }

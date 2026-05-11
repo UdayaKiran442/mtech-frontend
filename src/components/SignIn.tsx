@@ -2,7 +2,7 @@
 
 import { Dispatch, SetStateAction, useState } from "react"
 import { setCookie } from 'cookies-next'
-import { redirect, useRouter } from "next/navigation"
+import { redirect } from "next/navigation"
 
 
 import { Input } from "./ui/Input"
@@ -18,7 +18,6 @@ export default function SignIn({ setIsSignUp }: { setIsSignUp: Dispatch<SetState
         password: ""
     })
     const [loading, setLoading] = useState(false);
-    const router = useRouter();
 
 
     function onChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -44,6 +43,14 @@ export default function SignIn({ setIsSignUp }: { setIsSignUp: Dispatch<SetState
             if (isAuthenticated && userProfile) {
                 redirect(`/workspace/${userProfile.workspace.workspaceId}`);
             }
+        }
+        else {
+            if (loginUser.error === "Invalid credentials") {
+                alert("Invalid email or password. Please try again.")
+                setLoading(false)
+                return
+            }
+            alert("Something went wrong while logging in. Please try again later.")
         }
         setLoading(false)
     }
