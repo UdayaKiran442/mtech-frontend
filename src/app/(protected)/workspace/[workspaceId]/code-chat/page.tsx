@@ -1,3 +1,4 @@
+import { Codebot } from "@/components/CodeBot";
 import { ConnectGithub } from "@/components/ConnectGithub";
 import { getAuthenticatedUser } from "@/lib/user";
 
@@ -8,6 +9,6 @@ export default async function CodeChat() {
         return <ConnectGithub />;
     }
     return (
-        <p>CodeChat</p>
+        <Codebot />
     )
 }
