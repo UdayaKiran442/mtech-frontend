@@ -22,9 +22,9 @@ export function Codebot() {
             <div className="flex flex-col items-center mt-10 gap-4 ">
                 <SquareTerminal className="text-icon_primary" size={48} />
                 <H6 className="text-white">Cook with Codebot</H6>
-                <p className="text-text text-sm">Query your codebase by selecting branch and repository</p>
+                <p className="text-text text-sm">Query your codebase by selecting repository and branch</p>
             </div>
-            <div className="flex w-[80%] bg-bg_secondary p-5 rounded-2xl mt-2 gap-6">
+            <div className="flex w-[80%] bg-bg_secondary p-5 rounded-2xl mt-5 gap-6">
                 {/* repo */}
                 <div className="flex flex-col gap-2 w-1/2">
                     {/* repo with icon */}
