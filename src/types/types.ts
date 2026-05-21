@@ -130,3 +130,25 @@ export type IUploadDocumentToAWSResponse = SuccessResponse & {
         url: string,
     }
 }
+
+export type IRepository = {
+    id: string;
+    node_id: string;
+    name: string;
+    full_name: string;
+    private: boolean;
+    owner: {
+        login: string;
+        id: number;
+        node_id: string;
+        avatar_url: string;
+    };
+}
+
+export type IAccessibleRepositoriesResponse = SuccessResponse & {
+    repositories: {
+        total_count: number;
+        repository_selection: string;
+        repositories: IRepository[];
+    }
+}

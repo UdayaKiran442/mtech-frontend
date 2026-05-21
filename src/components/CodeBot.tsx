@@ -3,16 +3,19 @@
 import { useState } from "react";
 import { GitBranch, Globe, SquareTerminal } from "lucide-react";
 import { H6 } from "./ui/Typography";
+import { IRepository } from "@/types/types";
 
-export function Codebot() {
-    const [selectedRepo, setSelectedRepo] = useState("");
+export function Codebot({repositories}: {repositories: IRepository[]}) {
+    const [selectedRepo, setSelectedRepo] = useState<string>("");
     const [branches, setBranches] = useState<string[]>([]);
     const [selectedBranch, setSelectedBranch] = useState("");
 
-    const repos = ["Repo 1", "Repo 2", "Repo 3"]; // Example repo names
 
     const handleRepoChange = (repo: string) => {
         setSelectedRepo(repo);
+        // call API to fetch branches for the selected repo and update state
+        // once repo and branch selection is done, check if the particular branch and repo is parsed and upserted to neo4j. If not show a message "Parsing in progress, please wait..." and disable the chat input until the parsing is done. Once it's done, enable the chat input and show a message "Parsing completed, you can now chat with Codebot!"
+        
         // Example branches for the selected repo
         setBranches(repo ? ["Branch 1", "Branch 2", "Branch 3"] : []);
     };
@@ -39,9 +42,9 @@ export function Codebot() {
                         onChange={(e) => handleRepoChange(e.target.value)}
                     >
                         <option value="">Select a repository</option>
-                        {repos.map((repo) => (
-                            <option key={repo} value={repo}>
-                                {repo}
+                        {repositories.map((repo) => (
+                            <option key={repo.id} value={repo.name}>
+                                {repo.name}
                             </option>
                         ))}
                     </select>
