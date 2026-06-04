@@ -1,4 +1,4 @@
-import { IAccessibleRepositoriesResponse } from "@/types/types";
+import { IAccessibleRepositoriesResponse, IBranchesResponse } from "@/types/types";
 
 const BASE_URL = "http://localhost:3000/v1"
 
@@ -36,6 +36,14 @@ export async function fetchAccessibleReposAPI(payload: { installationId: string 
     return await response.json();
 }
 
-export async function fetchBranchesAPI(payload: {installationId: string, repo: string, owner: string}, token: string) {
-    
+export async function fetchBranchesAPI(payload: {installationId: string, repo: string, owner: string}, token: string): Promise<IBranchesResponse> {
+    const response = await fetch(`${BASE_URL}/github/repository-branches`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}`
+        },
+        body: JSON.stringify(payload)  
+    })
+    return await response.json();
 }

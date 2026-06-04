@@ -152,3 +152,25 @@ export type IAccessibleRepositoriesResponse = SuccessResponse & {
         repositories: IRepository[];
     }
 }
+
+export type IBranchesResponse = SuccessResponse & {
+    branches: IBranch[];
+}
+
+export type IBranch = {
+    name: string;
+    commit: {
+        sha: string;
+        url: string;
+    };
+    protected: boolean;
+    protection: {
+        enabled: boolean,
+        required_status_checks: {
+            enforcement_level: string;
+            contexts: string[];
+            checks: string[];
+        }
+    },
+    protection_url: string;
+}

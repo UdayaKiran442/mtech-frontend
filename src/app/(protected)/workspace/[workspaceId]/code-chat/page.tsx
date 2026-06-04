@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 
 export default async function CodeChat() {
     const { userProfile, token } = await getAuthenticatedUser();
-    if (!userProfile) {
+    if (!userProfile || !token || !userProfile.user.githubInstallationId) {
         redirect("/");
     }
     const isConnectedToGithub = userProfile?.user.isGithubConnected;
@@ -17,7 +17,7 @@ export default async function CodeChat() {
             installationId: userProfile?.user.githubInstallationId,
         }, token);
         return (
-            <Codebot repositories={repositories.repositories.repositories} />
+            <Codebot repositories={repositories.repositories.repositories} installationId={userProfile?.user.githubInstallationId} token={token} />
         )
     }
 
