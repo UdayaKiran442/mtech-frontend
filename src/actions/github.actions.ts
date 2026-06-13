@@ -47,3 +47,15 @@ export async function fetchBranchesAPI(payload: {installationId: string, repo: s
     })
     return await response.json();
 }
+
+export async function checkIfRepoParsedAPI(payload: {repoName: string, branch: string}, token: string): Promise<{success: boolean, isParsed: boolean}> {
+    const response = await fetch(`${BASE_URL}/github/check-repo-parsed`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}`
+        },
+        body: JSON.stringify(payload)
+    })
+    return await response.json();
+}

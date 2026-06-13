@@ -4,7 +4,7 @@ import { useState } from "react";
 import { GitBranch, Globe, SquareTerminal } from "lucide-react";
 import { H6 } from "./ui/Typography";
 import { IRepository } from "@/types/types";
-import { fetchBranchesAPI } from "@/actions/github.actions";
+import { checkIfRepoParsedAPI, fetchBranchesAPI } from "@/actions/github.actions";
 
 export function Codebot({repositories, installationId, token}: {repositories: IRepository[]; installationId: string; token: string}) {
     const [selectedRepo, setSelectedRepo] = useState<{
@@ -47,7 +47,23 @@ export function Codebot({repositories, installationId, token}: {repositories: IR
 
     async function handleBranchChange(branch: string) {
         setSelectedBranch(branch);
-        // once repo and branch selection is done, check if the particular branch and repo is parsed and upserted to neo4j. If not show a message "Parsing in progress, please wait..." and disable the chat input until the parsing is done. Once it's done, enable the chat input and show a message "Parsing completed, you can now chat with Codebot!"      
+        if (!selectedRepo) {
+            return;
+        }
+        // once repo and branch selection is done, check if the particular branch and repo is parsed and upserted to neo4j. If not show a message "Parsing in progress, please wait..." and disable the chat input until the parsing is done. Once it's done, enable the chat input and show a message "Parsing completed, you can now chat with Codebot!"  
+        const response = await checkIfRepoParsedAPI({
+            repoName: selectedRepo.name,
+            branch
+        }, token);
+        if (!response.success) {
+            // show error message
+            return;
+        }  
+        const isParsed = response.isParsed;
+        if (!isParsed) {
+            // call parsing API
+        }
+
 
     }
 
@@ -89,7 +105,7 @@ export function Codebot({repositories, installationId, token}: {repositories: IR
                     </div>
                     {/* dropdown with branch names */}
                     <select
-                        className={`p-2 rounded-md border border-bg_primary bg-bg_primary text-text text-sm ${selectedRepo ? "cursor-pointer": "cursor-not-allowed"}`}
+                        className={`p-2 rounded-md border border-bg_primary bg-bg_primary text-text text-sm ${selectedRepo || branchesLoading ? "cursor-pointer": "cursor-not-allowed"}`}
                         value={selectedBranch}
                         disabled={!selectedRepo || branchesLoading}
                         onChange={(e) => handleBranchChange(e.target.value)}
@@ -103,6 +119,7 @@ export function Codebot({repositories, installationId, token}: {repositories: IR
                     </select>
                 </div>
             </div>
+            {/* once repo and branch selection is done and isParsed is true, enable the chat input, else disable the chat input */}
         </div>
     );
 }
