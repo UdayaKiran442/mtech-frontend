@@ -4,7 +4,7 @@ import { useState } from "react";
 import { GitBranch, Globe, SquareTerminal } from "lucide-react";
 import { H6 } from "./ui/Typography";
 import { IRepository } from "@/types/types";
-import { checkIfRepoParsedAPI, fetchBranchesAPI } from "@/actions/github.actions";
+import { checkIfRepoParsedAPI, fetchBranchesAPI, parseRepoAPI } from "@/actions/github.actions";
 
 export function Codebot({repositories, installationId, token}: {repositories: IRepository[]; installationId: string; token: string}) {
     const [selectedRepo, setSelectedRepo] = useState<{
@@ -15,6 +15,7 @@ export function Codebot({repositories, installationId, token}: {repositories: IR
     const [branches, setBranches] = useState<string[]>([]);
     const [selectedBranch, setSelectedBranch] = useState("");
     const [branchesLoading, setBranchesLoading] = useState(false);
+    const [parsingInProgress, setParsingInProgress] = useState(false);
 
 
     async function handleRepoChange(repo: string){
@@ -62,6 +63,18 @@ export function Codebot({repositories, installationId, token}: {repositories: IR
         const isParsed = response.isParsed;
         if (!isParsed) {
             // call parsing API
+            setParsingInProgress(true);
+            const response = await parseRepoAPI({
+                installationId,
+                repoName: selectedRepo.name,
+                branch,
+                owner: selectedRepo.owner
+            }, token);
+            setParsingInProgress(false);
+            if (!response.success) {
+                // show error message
+                return;
+            }
         }
 
 
@@ -120,6 +133,15 @@ export function Codebot({repositories, installationId, token}: {repositories: IR
                 </div>
             </div>
             {/* once repo and branch selection is done and isParsed is true, enable the chat input, else disable the chat input */}
+            {parsingInProgress ? (
+                <div className="mt-5 p-4 bg-yellow-100 text-yellow-800 rounded-md">
+                    Parsing in progress, please wait...
+                </div>
+            ) : selectedRepo && selectedBranch ? (
+                <div className="mt-5 p-4 bg-green-100 text-green-800 rounded-md">
+                    Parsing completed, you can now chat with Codebot!
+                </div>
+            ) : null}
         </div>
     );
 }

@@ -174,3 +174,14 @@ export type IBranch = {
     },
     protection_url: string;
 }
+
+export type IParsedRepo = {
+    repoName: string;
+    branch: string;
+    userId: string;
+    createdAt: Date;
+}
+
+export type IParseRepoAPIResponse = SuccessResponse & {
+    parsedRepo: IParsedRepo;
+}

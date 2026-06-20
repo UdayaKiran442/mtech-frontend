@@ -1,4 +1,4 @@
-import { IAccessibleRepositoriesResponse, IBranchesResponse } from "@/types/types";
+import { IAccessibleRepositoriesResponse, IBranchesResponse, IParseRepoAPIResponse } from "@/types/types";
 
 const BASE_URL = "http://localhost:3000/v1"
 
@@ -50,6 +50,18 @@ export async function fetchBranchesAPI(payload: {installationId: string, repo: s
 
 export async function checkIfRepoParsedAPI(payload: {repoName: string, branch: string}, token: string): Promise<{success: boolean, isParsed: boolean}> {
     const response = await fetch(`${BASE_URL}/github/check-repo-parsed`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}`
+        },
+        body: JSON.stringify(payload)
+    })
+    return await response.json();
+}
+
+export async function parseRepoAPI(payload: {installationId: string, repoName: string, branch: string, owner: string}, token: string): Promise<IParseRepoAPIResponse> {
+    const response = await fetch(`${BASE_URL}/github/parse-repository`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
