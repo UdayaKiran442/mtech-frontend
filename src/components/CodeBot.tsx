@@ -133,29 +133,44 @@ export function Codebot({repositories, installationId, token}: {repositories: IR
                 </div>
             </div>
             {/* chat box will be here, we will disable when parsingInProgress is true and enable when branch and repo is selected and parsingInProgress is false. */}
-            <div className={`flex flex-col items-center mt-10 gap-4 w-[80%] ${parsingInProgress ? "pointer-events-none": ""}`}>
-                <textarea 
-                    className={`p-2 w-full rounded-md border border-gray-100 bg-bg_primary text-text text-sm ${parsingInProgress || !selectedRepo || !selectedBranch ? "cursor-not-allowed" : "cursor-text"}`} 
-                    name="query" 
+            <div className={`flex flex-col items-center mt-10 gap-3 w-[80%] ${parsingInProgress ? "pointer-events-none" : ""}`}>
+                <textarea
+                    className={`p-3 w-full rounded-md border border-gray-100 bg-bg_primary text-text text-sm resize-none ${
+                        parsingInProgress || !selectedRepo || !selectedBranch
+                            ? "cursor-not-allowed"
+                            : "cursor-text"
+                    }`}
+                    name="query"
                     rows={5}
-                    placeholder="Type your query here..." 
-                    disabled={parsingInProgress || !selectedRepo || !selectedBranch} 
+                    placeholder="Type your query here..."
+                    disabled={parsingInProgress || !selectedRepo || !selectedBranch}
                 />
-                <div className="flex justify-between w-full">
-                    <div>
-                        <select disabled={parsingInProgress || !selectedRepo || !selectedBranch}  className="text-white p-1 left-2 rounded-md bg-bg_primary border border-gray-200 text-sm">
-                            <option>Feature Implementation</option>
-                            <option>Explain Code</option>
-                            <option>Find Bug</option>
-                        </select>
-                    </div>
-                    <div>
-                        <button className={` px-2 py-1.5 bg-blue-500 text-white rounded-md hover:bg-blue-600 ${parsingInProgress || !selectedRepo || !selectedBranch ? "cursor-not-allowed" : "cursor-pointer"}`} disabled={parsingInProgress || !selectedRepo || !selectedBranch} >
-                            Send
-                        </button>
-                    </div>                 
-                </div>
 
+                <div className="flex items-center justify-between w-full">
+                    <select
+                        disabled={parsingInProgress || !selectedRepo || !selectedBranch}
+                        className={`px-3 py-2 rounded-md bg-bg_primary border border-gray-200 text-white text-sm outline-none ${
+                            parsingInProgress || !selectedRepo || !selectedBranch
+                                ? "cursor-not-allowed opacity-50"
+                                : "cursor-pointer"
+                        }`}
+                    >
+                        <option>Feature Implementation</option>
+                        <option>Explain Code</option>
+                        <option>Find Bug</option>
+                    </select>
+
+                    <button
+                        className={`px-4 py-2 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 transition ${
+                            parsingInProgress || !selectedRepo || !selectedBranch
+                                ? "cursor-not-allowed opacity-50"
+                                : "cursor-pointer"
+                        }`}
+                        disabled={parsingInProgress || !selectedRepo || !selectedBranch}
+                    >
+                        Send
+                    </button>
+                </div>
             </div>
         </div>
     );
