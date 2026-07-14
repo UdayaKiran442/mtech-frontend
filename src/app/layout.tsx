@@ -19,8 +19,8 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CollabAI",
-  description: "Next generation Agentic AI based collaborative workspace",
+  title: "Codebot",
+  description: "Next generation Agentic AI based agentic code assistant",
 };
 
 export default function RootLayout({
