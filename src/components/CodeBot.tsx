@@ -115,7 +115,7 @@ export function Codebot({repositories, installationId, token}: {repositories: IR
                     </div>
                     {/* dropdown with branch names */}
                     <select
-                        className={`p-2 rounded-md border border-bg_primary bg-bg_primary text-text text-sm ${selectedRepo || branchesLoading ? "cursor-pointer": "cursor-not-allowed"}`}
+                        className={`p-2 rounded-md border border-bg_primary bg-bg_primary text-text text-sm ${!selectedRepo || branchesLoading ? "cursor-not-allowed": "cursor-pointer"}`}
                         value={selectedBranch}
                         disabled={!selectedRepo || branchesLoading}
                         onChange={(e) => handleBranchChange(e.target.value)}
