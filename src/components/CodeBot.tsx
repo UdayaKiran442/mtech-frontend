@@ -5,6 +5,7 @@ import { GitBranch, Globe, SquareTerminal } from "lucide-react";
 import { H6 } from "./ui/Typography";
 import { IRepository } from "@/types/types";
 import { checkIfRepoParsedAPI, fetchBranchesAPI, parseRepoAPI } from "@/actions/github.actions";
+import { CodeBotHeader } from "./CodeBotHeader";
 
 export function Codebot({repositories, installationId, token}: {repositories: IRepository[]; installationId: string; token: string}) {
     const [selectedRepo, setSelectedRepo] = useState<{
@@ -82,11 +83,7 @@ export function Codebot({repositories, installationId, token}: {repositories: IR
 
     return (
         <div className="flex flex-col items-center mt-20">
-            <div className="flex flex-col items-center mt-10 gap-4 ">
-                <SquareTerminal className="text-icon_primary" size={48} />
-                <H6 className="text-white">Cook with Codebot</H6>
-                <p className="text-text text-sm">Query your codebase by selecting repository and branch</p>
-            </div>
+            <CodeBotHeader />
             <div className="flex w-[80%] bg-bg_secondary p-5 rounded-2xl mt-5 gap-6">
                 {/* repo */}
                 <div className="flex flex-col gap-2 w-1/2">
