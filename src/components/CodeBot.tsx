@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { GitBranch, Globe, SquareTerminal } from "lucide-react";
 import { H6 } from "./ui/Typography";
 import { IRepository } from "@/types/types";
@@ -17,6 +17,7 @@ export function Codebot({repositories, installationId, token}: {repositories: IR
     const [selectedBranch, setSelectedBranch] = useState("");
     const [branchesLoading, setBranchesLoading] = useState(false);
     const [parsingInProgress, setParsingInProgress] = useState(false);
+    const [query, setQuery] = useState("");
 
 
     async function handleRepoChange(repo: string){
@@ -77,8 +78,13 @@ export function Codebot({repositories, installationId, token}: {repositories: IR
                 return;
             }
         }
+    }
 
-
+    function handleQueryChange(e: ChangeEvent<HTMLTextAreaElement>){
+        const value = e.target.value;
+        console.log("Query changed: ", value);
+        setQuery(value);
+        
     }
 
     return (
@@ -140,6 +146,7 @@ export function Codebot({repositories, installationId, token}: {repositories: IR
                     name="query"
                     rows={5}
                     placeholder="Type your query here..."
+                    onChange={(e) => handleQueryChange(e)}
                     disabled={parsingInProgress || !selectedRepo || !selectedBranch}
                 />
 
