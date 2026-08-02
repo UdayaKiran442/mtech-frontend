@@ -9,6 +9,11 @@ import { CodeBotHeader } from "./CodeBotHeader";
 import { RepoSelection } from "./RepoSelection";
 import { searchFilesAPI } from "@/actions/search.actions";
 
+type SelectedFile = {
+    path: string;
+    type: "repo" | "knowledgeBase";
+};
+
 export function Codebot({ repositories, installationId, token, workspaceId }: { repositories: IRepository[]; installationId: string; token: string; workspaceId: string }) {
     const [selectedRepo, setSelectedRepo] = useState<{
         name: string;
@@ -24,6 +29,8 @@ export function Codebot({ repositories, installationId, token, workspaceId }: { 
         knowledgeBaseFiles: [],
         repoFiles: []
     });
+    // this is to keep track of the files selected from search, this will be sent to backend when user submits the query.
+    const [selectedFiles, setSelectedFiles] = useState<SelectedFile[]>([]);
 
 
     async function handleRepoChange(repo: string) {
@@ -86,51 +93,99 @@ export function Codebot({ repositories, installationId, token, workspaceId }: { 
         }
     }
 
-    async function handleQueryChange(e: ChangeEvent<HTMLTextAreaElement>) {
+    async function handleQueryChange(
+        e: ChangeEvent<HTMLTextAreaElement>
+    ) {
         const value = e.target.value;
-        // check if the word is starting with "@", if so go to if loop
-        const words = value.split(" ");
-        const lastWord = words[words.length - 1];
-        const startingWord = lastWord[0];
-
-        if (startingWord === "@" && selectedRepo) {
-            const searchString = lastWord.slice(1);
-            // call search files API and show a dropdown of files in the repo and branch selected. Once a file is selected, insert the file path in the query text area.
-            // when search string other than "@" has value greater than 2, call search files API and show a drop down
-            if (searchString.length > 2) {
-                // call search files API
-                const files = await searchFilesAPI({
-                    branch: selectedBranch,
-                    repoName: selectedRepo.name,
-                    searchString: searchString,
-                    workspaceId: workspaceId
-                }, token);
-                setSearchResults(files.files);
-                // set query except the last word
-                setQuery(words.slice(0, words.length - 1).join(" ") + " ");
-            }
-            else {
-                setSearchResults({
-                    knowledgeBaseFiles: [],
-                    repoFiles: []
-                });
-                setQuery(value);
-            }
-        }
-
-        // always update the textarea value so user can type/delete normally
         setQuery(value);
 
+        if (!selectedRepo || !selectedBranch) {
+            setSearchResults({
+                repoFiles: [],
+                knowledgeBaseFiles: [],
+            });
+            return;
+        }
+
+        const words = value.split(" ");
+        const lastWord = words.at(-1) ?? "";
+
+        if (!lastWord.startsWith("@")) {
+            setSearchResults({
+                repoFiles: [],
+                knowledgeBaseFiles: [],
+            });
+            return;
+        }
+
+        const searchString = lastWord.slice(1);
+
+        if (searchString.length < 3) {
+            setSearchResults({
+                repoFiles: [],
+                knowledgeBaseFiles: [],
+            });
+            return;
+        }
+
+        const files = await searchFilesAPI(
+            {
+                branch: selectedBranch,
+                repoName: selectedRepo.name,
+                searchString,
+                workspaceId,
+            },
+            token
+        );
+
+        if (files.success) {
+            setSearchResults(files.files);
+        }
     }
 
-    function insertSearchFileInQuery(fileName: string) {
+    function insertSearchFileInQuery({
+        fileName,
+        path,
+        type,
+    }: {
+        fileName: string;
+        path: string;
+        type: "repo" | "knowledgeBase";
+    }) {
         setQuery((prev) => {
             const atIndex = prev.lastIndexOf("@");
-            const before = atIndex !== -1 ? prev.slice(0, atIndex) : prev;
-            const newQuery = (before + fileName).trimEnd() + " ";
-            return newQuery;
+
+            if (atIndex === -1) return prev;
+
+            return prev.slice(0, atIndex) + fileName + " ";
         });
-        setSearchResults({ knowledgeBaseFiles: [], repoFiles: [] });
+
+        setSelectedFiles((prev) => {
+            const exists = prev.some(
+                (f) => f.path === path && f.type === type
+            );
+
+            if (exists) return prev;
+
+            return [
+                ...prev,
+                {
+                    path,
+                    type,
+                },
+            ];
+        });
+
+        setSearchResults({
+            repoFiles: [],
+            knowledgeBaseFiles: [],
+        });
+    }
+
+    async function handleSubmit() {
+        console.log(selectedFiles);
+        setQuery("");
+        setSelectedFiles([]);
     }
 
     return (
@@ -144,8 +199,8 @@ export function Codebot({ repositories, installationId, token, workspaceId }: { 
                 {/* dropdown for search results */}
                 <textarea
                     className={`p-3 w-full rounded-md border border-gray-100 bg-bg_primary text-text text-sm resize-none ${parsingInProgress || !selectedRepo || !selectedBranch
-                            ? "cursor-not-allowed"
-                            : "cursor-text"
+                        ? "cursor-not-allowed"
+                        : "cursor-text"
                         }`}
                     name="query"
                     value={query}
@@ -158,13 +213,13 @@ export function Codebot({ repositories, installationId, token, workspaceId }: { 
                 {(searchResults.repoFiles.length > 0 || searchResults.knowledgeBaseFiles.length > 0) && (
                     <div className="absolute left-0 right-0 mt-10 bg-white rounded-md shadow-lg z-50 max-h-48 overflow-auto w-full cursor-pointer">
                         {searchResults.repoFiles.map((f) => (
-                            <button key={f.filePath} onClick={() => insertSearchFileInQuery(f.fileName)} className="w-full text-left px-3 py-2 hover:bg-gray-100">
+                            <button key={f.filePath} onClick={() => insertSearchFileInQuery({ fileName: f.fileName, type: "repo", path: f.filePath })} className="w-full text-left px-3 py-2 hover:bg-gray-100">
                                 <div className="text-sm text-gray-800">{f.filePath}</div>
                                 <div className="text-xs text-gray-500">{f.repoName} — {f.branch}</div>
                             </button>
                         ))}
                         {searchResults.knowledgeBaseFiles.map((k) => (
-                            <button key={k.fileId} onClick={() => insertSearchFileInQuery(k.key)} className="w-full text-left px-3 py-2 hover:bg-gray-100">
+                            <button key={k.fileId} onClick={() => insertSearchFileInQuery({ fileName: k.key, type: "knowledgeBase", path: k.key })} className="w-full text-left px-3 py-2 hover:bg-gray-100">
                                 <div className="text-sm text-gray-800">{k.key}</div>
                                 <div className="text-xs text-gray-500">Knowledge Base</div>
                             </button>
@@ -176,8 +231,8 @@ export function Codebot({ repositories, installationId, token, workspaceId }: { 
                     <select
                         disabled={parsingInProgress || !selectedRepo || !selectedBranch}
                         className={`px-3 py-2 rounded-md bg-bg_primary border border-gray-200 text-white text-sm outline-none ${parsingInProgress || !selectedRepo || !selectedBranch
-                                ? "cursor-not-allowed opacity-50"
-                                : "cursor-pointer"
+                            ? "cursor-not-allowed opacity-50"
+                            : "cursor-pointer"
                             }`}
                     >
                         <option>Feature Implementation</option>
@@ -187,10 +242,11 @@ export function Codebot({ repositories, installationId, token, workspaceId }: { 
 
                     <button
                         className={`px-4 py-2 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 transition ${parsingInProgress || !selectedRepo || !selectedBranch
-                                ? "cursor-not-allowed opacity-50"
-                                : "cursor-pointer"
+                            ? "cursor-not-allowed opacity-50"
+                            : "cursor-pointer"
                             }`}
                         disabled={parsingInProgress || !selectedRepo || !selectedBranch}
+                        onClick={handleSubmit}
                     >
                         Send
                     </button>
