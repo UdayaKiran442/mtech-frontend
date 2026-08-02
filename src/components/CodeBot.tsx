@@ -1,8 +1,6 @@
 "use client";
 
 import { ChangeEvent, useState } from "react";
-import { GitBranch, Globe, SquareTerminal } from "lucide-react";
-import { H6 } from "./ui/Typography";
 import { IRepository, ISearchFilesResponseAPI } from "@/types/types";
 import { checkIfRepoParsedAPI, fetchBranchesAPI, parseRepoAPI } from "@/actions/github.actions";
 import { CodeBotHeader } from "./CodeBotHeader";
@@ -93,9 +91,7 @@ export function Codebot({ repositories, installationId, token, workspaceId }: { 
         }
     }
 
-    async function handleQueryChange(
-        e: ChangeEvent<HTMLTextAreaElement>
-    ) {
+    async function handleQueryChange(e: ChangeEvent<HTMLTextAreaElement>) {
         const value = e.target.value;
         setQuery(value);
 
@@ -143,15 +139,7 @@ export function Codebot({ repositories, installationId, token, workspaceId }: { 
         }
     }
 
-    function insertSearchFileInQuery({
-        fileName,
-        path,
-        type,
-    }: {
-        fileName: string;
-        path: string;
-        type: "repo" | "knowledgeBase";
-    }) {
+    function insertSearchFileInQuery({ fileName, path, type }: { fileName: string; path: string; type: "repo" | "knowledgeBase" }) {
         setQuery((prev) => {
             const atIndex = prev.lastIndexOf("@");
 
@@ -183,7 +171,6 @@ export function Codebot({ repositories, installationId, token, workspaceId }: { 
     }
 
     async function handleSubmit() {
-        console.log(selectedFiles);
         setQuery("");
         setSelectedFiles([]);
     }
