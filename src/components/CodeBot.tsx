@@ -89,9 +89,12 @@ export function Codebot({ repositories, installationId, token, workspaceId }: { 
     async function handleQueryChange(e: ChangeEvent<HTMLTextAreaElement>) {
         const value = e.target.value;
         // check if the word is starting with "@", if so go to if loop
-        const startingWord = value[0]
+        const words = value.split(" ");
+        const lastWord = words[words.length - 1];
+        const startingWord = lastWord[0];
+
         if (startingWord === "@" && selectedRepo) {
-            const searchString = value.slice(1);
+            const searchString = lastWord.slice(1);
             // call search files API and show a dropdown of files in the repo and branch selected. Once a file is selected, insert the file path in the query text area.
             // when search string other than "@" has value greater than 2, call search files API and show a drop down
             if (searchString.length > 2) {
@@ -102,18 +105,32 @@ export function Codebot({ repositories, installationId, token, workspaceId }: { 
                     searchString: searchString,
                     workspaceId: workspaceId
                 }, token);
-                console.log("files", files);
                 setSearchResults(files.files);
+                // set query except the last word
+                setQuery(words.slice(0, words.length - 1).join(" ") + " ");
             }
             else {
                 setSearchResults({
                     knowledgeBaseFiles: [],
                     repoFiles: []
                 });
+                setQuery(value);
             }
         }
+
+        // always update the textarea value so user can type/delete normally
         setQuery(value);
 
+    }
+
+    function insertSearchFileInQuery(fileName: string) {
+        setQuery((prev) => {
+            const atIndex = prev.lastIndexOf("@");
+            const before = atIndex !== -1 ? prev.slice(0, atIndex) : prev;
+            const newQuery = (before + fileName).trimEnd() + " ";
+            return newQuery;
+        });
+        setSearchResults({ knowledgeBaseFiles: [], repoFiles: [] });
     }
 
     return (
@@ -123,18 +140,37 @@ export function Codebot({ repositories, installationId, token, workspaceId }: { 
                 <RepoSelection branches={branches} branchesLoading={branchesLoading} handleBranchChange={handleBranchChange} handleRepoChange={handleRepoChange} repositories={repositories} selectedBranch={selectedBranch} selectedRepo={selectedRepo} />
             </div>
             {/* chat box will be here, we will disable when parsingInProgress is true and enable when branch and repo is selected and parsingInProgress is false. */}
-            <div className={`flex flex-col items-center mt-10 gap-3 w-[80%] ${parsingInProgress ? "pointer-events-none" : ""}`}>
+            <div className={`relative flex flex-col items-center mt-10 gap-3 w-[80%] ${parsingInProgress ? "pointer-events-none" : ""}`}>
+                {/* dropdown for search results */}
                 <textarea
                     className={`p-3 w-full rounded-md border border-gray-100 bg-bg_primary text-text text-sm resize-none ${parsingInProgress || !selectedRepo || !selectedBranch
                             ? "cursor-not-allowed"
                             : "cursor-text"
                         }`}
                     name="query"
+                    value={query}
                     rows={5}
                     placeholder="Type your query here..."
                     onChange={(e) => handleQueryChange(e)}
                     disabled={parsingInProgress || !selectedRepo || !selectedBranch}
                 />
+
+                {(searchResults.repoFiles.length > 0 || searchResults.knowledgeBaseFiles.length > 0) && (
+                    <div className="absolute left-0 right-0 mt-10 bg-white rounded-md shadow-lg z-50 max-h-48 overflow-auto w-full cursor-pointer">
+                        {searchResults.repoFiles.map((f) => (
+                            <button key={f.filePath} onClick={() => insertSearchFileInQuery(f.filePath)} className="w-full text-left px-3 py-2 hover:bg-gray-100">
+                                <div className="text-sm text-gray-800">{f.filePath}</div>
+                                <div className="text-xs text-gray-500">{f.repoName} — {f.branch}</div>
+                            </button>
+                        ))}
+                        {searchResults.knowledgeBaseFiles.map((k) => (
+                            <button key={k.fileId} onClick={() => insertSearchFileInQuery(k.key)} className="w-full text-left px-3 py-2 hover:bg-gray-100">
+                                <div className="text-sm text-gray-800">{k.key}</div>
+                                <div className="text-xs text-gray-500">Knowledge Base</div>
+                            </button>
+                        ))}
+                    </div>
+                )}
 
                 <div className="flex items-center justify-between w-full">
                     <select
