@@ -3,25 +3,30 @@
 import { ChangeEvent, useState } from "react";
 import { GitBranch, Globe, SquareTerminal } from "lucide-react";
 import { H6 } from "./ui/Typography";
-import { IRepository } from "@/types/types";
+import { IRepository, ISearchFilesResponseAPI } from "@/types/types";
 import { checkIfRepoParsedAPI, fetchBranchesAPI, parseRepoAPI } from "@/actions/github.actions";
 import { CodeBotHeader } from "./CodeBotHeader";
 import { RepoSelection } from "./RepoSelection";
+import { searchFilesAPI } from "@/actions/search.actions";
 
-export function Codebot({repositories, installationId, token}: {repositories: IRepository[]; installationId: string; token: string}) {
+export function Codebot({ repositories, installationId, token, workspaceId }: { repositories: IRepository[]; installationId: string; token: string; workspaceId: string }) {
     const [selectedRepo, setSelectedRepo] = useState<{
         name: string;
         full_name: string;
         owner: string;
-    } | null >(null);
+    } | null>(null);
     const [branches, setBranches] = useState<string[]>([]);
     const [selectedBranch, setSelectedBranch] = useState("");
     const [branchesLoading, setBranchesLoading] = useState(false);
     const [parsingInProgress, setParsingInProgress] = useState(false);
     const [query, setQuery] = useState("");
+    const [searchResults, setSearchResults] = useState<ISearchFilesResponseAPI['files']>({
+        knowledgeBaseFiles: [],
+        repoFiles: []
+    });
 
 
-    async function handleRepoChange(repo: string){
+    async function handleRepoChange(repo: string) {
         const selected = repositories.find((r) => r.name === repo);
         if (!selected) {
             return;
@@ -62,7 +67,7 @@ export function Codebot({repositories, installationId, token}: {repositories: IR
         if (!response.success) {
             // show error message
             return;
-        }  
+        }
         const isParsed = response.isParsed;
         if (!isParsed) {
             // call parsing API
@@ -81,27 +86,49 @@ export function Codebot({repositories, installationId, token}: {repositories: IR
         }
     }
 
-    function handleQueryChange(e: ChangeEvent<HTMLTextAreaElement>){
+    async function handleQueryChange(e: ChangeEvent<HTMLTextAreaElement>) {
         const value = e.target.value;
-        console.log("Query changed: ", value);
+        // check if the word is starting with "@", if so go to if loop
+        const startingWord = value[0]
+        if (startingWord === "@" && selectedRepo) {
+            const searchString = value.slice(1);
+            // call search files API and show a dropdown of files in the repo and branch selected. Once a file is selected, insert the file path in the query text area.
+            // when search string other than "@" has value greater than 2, call search files API and show a drop down
+            if (searchString.length > 2) {
+                // call search files API
+                const files = await searchFilesAPI({
+                    branch: selectedBranch,
+                    repoName: selectedRepo.name,
+                    searchString: searchString,
+                    workspaceId: workspaceId
+                }, token);
+                console.log("files", files);
+                setSearchResults(files.files);
+            }
+            else {
+                setSearchResults({
+                    knowledgeBaseFiles: [],
+                    repoFiles: []
+                });
+            }
+        }
         setQuery(value);
-        
+
     }
 
     return (
         <div className="flex flex-col items-center mt-20">
             <CodeBotHeader />
             <div className="flex w-[80%] bg-bg_secondary p-5 rounded-2xl mt-5 gap-6">
-               <RepoSelection branches={branches} branchesLoading={branchesLoading} handleBranchChange={handleBranchChange} handleRepoChange={handleRepoChange} repositories={repositories} selectedBranch={selectedBranch} selectedRepo={selectedRepo} />
+                <RepoSelection branches={branches} branchesLoading={branchesLoading} handleBranchChange={handleBranchChange} handleRepoChange={handleRepoChange} repositories={repositories} selectedBranch={selectedBranch} selectedRepo={selectedRepo} />
             </div>
             {/* chat box will be here, we will disable when parsingInProgress is true and enable when branch and repo is selected and parsingInProgress is false. */}
             <div className={`flex flex-col items-center mt-10 gap-3 w-[80%] ${parsingInProgress ? "pointer-events-none" : ""}`}>
                 <textarea
-                    className={`p-3 w-full rounded-md border border-gray-100 bg-bg_primary text-text text-sm resize-none ${
-                        parsingInProgress || !selectedRepo || !selectedBranch
+                    className={`p-3 w-full rounded-md border border-gray-100 bg-bg_primary text-text text-sm resize-none ${parsingInProgress || !selectedRepo || !selectedBranch
                             ? "cursor-not-allowed"
                             : "cursor-text"
-                    }`}
+                        }`}
                     name="query"
                     rows={5}
                     placeholder="Type your query here..."
@@ -112,11 +139,10 @@ export function Codebot({repositories, installationId, token}: {repositories: IR
                 <div className="flex items-center justify-between w-full">
                     <select
                         disabled={parsingInProgress || !selectedRepo || !selectedBranch}
-                        className={`px-3 py-2 rounded-md bg-bg_primary border border-gray-200 text-white text-sm outline-none ${
-                            parsingInProgress || !selectedRepo || !selectedBranch
+                        className={`px-3 py-2 rounded-md bg-bg_primary border border-gray-200 text-white text-sm outline-none ${parsingInProgress || !selectedRepo || !selectedBranch
                                 ? "cursor-not-allowed opacity-50"
                                 : "cursor-pointer"
-                        }`}
+                            }`}
                     >
                         <option>Feature Implementation</option>
                         <option>Explain Code</option>
@@ -124,11 +150,10 @@ export function Codebot({repositories, installationId, token}: {repositories: IR
                     </select>
 
                     <button
-                        className={`px-4 py-2 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 transition ${
-                            parsingInProgress || !selectedRepo || !selectedBranch
+                        className={`px-4 py-2 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 transition ${parsingInProgress || !selectedRepo || !selectedBranch
                                 ? "cursor-not-allowed opacity-50"
                                 : "cursor-pointer"
-                        }`}
+                            }`}
                         disabled={parsingInProgress || !selectedRepo || !selectedBranch}
                     >
                         Send

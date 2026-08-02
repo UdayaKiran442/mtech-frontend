@@ -185,3 +185,28 @@ export type IParsedRepo = {
 export type IParseRepoAPIResponse = SuccessResponse & {
     parsedRepo: IParsedRepo;
 }
+
+export type IRepoFile = {
+	repoName: string;
+    branch: string;
+    fileName: string;
+	filePath: string;
+    createdAt: string;
+    userId: string;
+};
+
+export type IKnowledgeBaseFile = {
+    fileId: string;
+    workspaceId: string;
+    fileUrl: string;
+    key: string;
+    uploadedBy: string;
+    uploadedAt: string;
+}
+
+export type ISearchFilesResponseAPI = SuccessResponse & {
+    files: {
+        repoFiles: IRepoFile[];
+        knowledgeBaseFiles: IKnowledgeBaseFile[];
+    }
+}

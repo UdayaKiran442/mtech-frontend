@@ -4,7 +4,8 @@ import { ConnectGithub } from "@/components/ConnectGithub";
 import { getAuthenticatedUser } from "@/lib/user";
 import { redirect } from "next/navigation";
 
-export default async function CodeChat() {
+export default async function CodeChat({ params }: { params: Promise<{ workspaceId: string }> }) {
+    const { workspaceId } = await params;
     const { userProfile, token } = await getAuthenticatedUser();
     if (!userProfile || !token || !userProfile.user.githubInstallationId) {
         redirect("/");
@@ -17,7 +18,7 @@ export default async function CodeChat() {
             installationId: userProfile?.user.githubInstallationId,
         }, token);
         return (
-            <Codebot repositories={repositories.repositories.repositories} installationId={userProfile?.user.githubInstallationId} token={token} />
+            <Codebot workspaceId={workspaceId} repositories={repositories.repositories.repositories} installationId={userProfile?.user.githubInstallationId} token={token} />
         )
     }
 
