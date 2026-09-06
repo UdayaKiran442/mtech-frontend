@@ -210,3 +210,16 @@ export type ISearchFilesResponseAPI = SuccessResponse & {
         knowledgeBaseFiles: IKnowledgeBaseFile[];
     }
 }
+
+export type ICodebotChat = {
+    codebotChatId: string;
+    codebotChatName: string | null;
+    workspaceId: string;
+    userId: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export type IFetchCodebotChatsResponseAPI = SuccessResponse & {
+    codebotChats: ICodebotChat[];
+}
